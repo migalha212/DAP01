@@ -1,0 +1,13 @@
+# IDE
+.idea
+.vscode
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+cmake-build-debug/
+
+# lib
+**/lib/googletest/
+**/Makefile
