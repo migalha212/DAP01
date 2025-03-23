@@ -3,8 +3,8 @@ using namespace std;
 
 template <class T>
 bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
-    if (edge->getOrig()->getDist() + edge->getWeight() < edge->getDest()->getDist()) { // we have found a better way to reach v
-        edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getWeight()); // d[v] = d[u] + w(u,v)
+    if (edge->getOrig()->getDist() + edge->getWalkTime() < edge->getDest()->getDist()) { // we have found a better way to reach v
+        edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getWalkTime()); // d[v] = d[u] + w(u,v)
         edge->getDest()->setPath(edge); // set the predecessor of v to u; in this case the edge from u to v
         return true;
     }
@@ -49,6 +49,7 @@ static std::vector<T> getPath(Graph<T>* g, const int& origin, const int& dest) {
     res.push_back(v->getInfo());
     while (v->getPath() != nullptr) {
         v = v->getPath()->getOrig();
+        cout << v->getInfo() << endl;
         res.push_back(v->getInfo());
     }
     reverse(res.begin(), res.end());

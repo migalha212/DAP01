@@ -8,9 +8,9 @@ include_directories(data_structures)
 add_executable(DA2025_PRJ1_G103
     data_structures/Graph.h
     data_structures/MutablePriorityQueue.h
-    src/application.cpp
-        src/clInterface.cpp
-        src/clInterface.h
+    src/main.cpp
+        src/CLInterface.cpp
+        src/CLInterface.h
         src/ParseFile.cpp
         src/ParseFile.h
         src/ShortestPathAlgorithms.cpp
