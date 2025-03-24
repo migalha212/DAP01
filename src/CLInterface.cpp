@@ -3,43 +3,62 @@
 using namespace std;
 
 void CLInterface::presentUI() {
-    system("cls"); // clears the terminal
+    Graph<int> g;
+    Parsefile parser;
+    parser.parseLocation("../small_data/Locations.csv", &g);
+    parser.parseDistance("../small_data/Distances.csv", &g);
     while (true) {
-        cout << endl << "Choose an option:" << endl;
-        cout << "1: Shortest driving Path from A to B" << endl;
-        cout << "2: Shortest walking Path from A to B" << endl;
-        
+        system("cls"); // clears the terminal
+        cout << endl;
+        cout << "Choose Desired Mode:" << endl;
+        cout << "1: Independent Planning" << endl;
+        cout << "2: Rescritcted Planning" << endl; //* this functionality is never metioned in the guy, not a priority
+        cout << "3: Eco-Friendly Planning" << endl;
         int choice;
         cin >> choice;
-        
-        while (choice < 1 || choice > 2) {
+        while (choice < 1 || choice > 3) {
             cout << "Choose a valid option" << endl;
             cin >> choice;
         }
+
+        int sID, dID; // Source ID and Destination ID
+        cout << endl << "Input the Starting Location ID followed by Destination ID" << endl;
+        cin >> sID >> dID;
+
         switch (choice) {
-            case 1:
-            this->simpleDist();
+        case 1:
+            independantRoute(sID, dID, &g);
             break;
-            default:
+        case 2:
+            //restrictedRoute(sID, dID, &g);
+            break;
+        case 3:
+            //ecoFriendlyRoute(sID, dID, &g);
+            break;
+        default:
             return;
         }
-        cin >> choice;
+        cin >> choice; // only here so the program doesn't immediatly close
         return;
     }
 }
 
-void CLInterface::simpleDist() {
-    //system("cls");
-    Graph<int> graph;
-    Parsefile parser;
-    parser.parseLocation("../small_data/Locations.csv",&graph);
-    parser.parseDistance("../small_data/Distances.csv", &graph);
-    cout << endl;
-    cout << "Chosen: Shortest driving Path from A to B" << endl;
-    cout << "Enter the desired values for A and B" << endl;
-    int a,b;
-    cin >> a >> b;
+void CLInterface::presentPath(vector<int>& v) {
+    for (int i = 0; i < v.size() - 1; i++) {
+        cout << v[i] << ',';
+    }
+    cout << v[v.size() - 1] << endl;
+}
 
-    dijkstra(&graph,a);
-    getPath(&graph,a,b);
+void CLInterface::independantRoute(int sID, int dID, Graph<int>* g) {
+    system("cls"); //clear screen
+    cout << endl;
+    cout << "Source:" << sID << endl;
+    cout << "Destination:" << dID << endl;
+
+    drivingDijkstra(g, sID);
+    vector<int> res = getPath(g, sID, dID);
+    cout << "BestDrivingRoute:";
+    presentPath(res);
+
 }

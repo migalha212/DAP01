@@ -21,6 +21,7 @@ void Parsefile::parseLocation(std::string filename, Graph<int> *graph) {
         getline(iss,parking,'\r');
         graph->addVertex(name, stoi(id), code, stoi(parking));
     }
+    file.close();
     return;
 }
 
@@ -38,8 +39,9 @@ void Parsefile::parseDistance(std::string filename, Graph<int> *graph) {
         string code1,code2,walkTime,driveTime;
         getline(iss,code1,',');
         getline(iss,code2,',');
-        getline(iss,walkTime,',');
-        getline(iss,driveTime,'\r');
+        getline(iss,driveTime,',');
+        getline(iss,walkTime,'\r');
         graph->addBidirectionalEdge(code1,code2,stoi(walkTime),stoi(driveTime));
     }
+    file.close();
 }

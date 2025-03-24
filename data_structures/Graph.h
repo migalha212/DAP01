@@ -42,7 +42,7 @@ public:
 
     //* all 6 methos below are new, just setters and getters for the new variables
 
-    std::string getlocation() const;
+    std::string getLocation() const;
     void setLocation(std::string location);
     std::string getCode() const;
     void setCode(std::string code);
@@ -259,7 +259,7 @@ T Vertex<T>::getInfo() const {
 }
 
 template <class T>
-std::string Vertex<T>::getlocation() const {
+std::string Vertex<T>::getLocation() const {
     return this->location;
 }
 
