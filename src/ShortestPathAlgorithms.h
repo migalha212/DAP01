@@ -13,7 +13,7 @@ bool relax(Edge<T>* edge);
 
 template <class T>
 //* Simple dijkstra's Single Source Shortest Path Algorithm from the TP03 exercises
-void dijkstra(Graph<T>* g, const int& origin);
+void drivingDijkstra(Graph<T>* g, const int& origin);
 
 template <class T>
 //* Auxiliary method from the TP03 exercises

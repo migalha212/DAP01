@@ -16,8 +16,13 @@ public:
      * Responsible for calling other "Present" methods depending on user input
      */
     void presentUI();
+    void presentPath(std::vector<int>& v);
 
-    void simpleDist();
+private:
+
+    void independantRoute(int sID, int dID, Graph<int>* g);
+    void restrictedRoute(int sID, int dID, Graph<int>* g);
+    void ecoFriendlyRoute(int sID, int dID, Graph<int>* g);
 };
 
 #endif //CLMENU_H
