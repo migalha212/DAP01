@@ -12,7 +12,7 @@ void CLInterface::presentUI() {
         cout << endl;
         cout << "Choose Desired Mode:" << endl;
         cout << "1: Independent Planning" << endl;
-        cout << "2: Rescritcted Planning" << endl; //* this functionality is never metioned in the guy, not a priority
+        cout << "2: Restricted Planning" << endl; //* this functionality is never metioned in the guide, not a priority
         cout << "3: Eco-Friendly Planning" << endl;
         int choice;
         cin >> choice;
@@ -60,5 +60,4 @@ void CLInterface::independantRoute(int sID, int dID, Graph<int>* g) {
     vector<int> res = getPath(g, sID, dID);
     cout << "BestDrivingRoute:";
     presentPath(res);
-
 }
