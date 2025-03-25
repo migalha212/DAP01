@@ -3,7 +3,6 @@ using namespace std;
 
 template <class T>
 bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
-    if(edge->getDriveTime() == 0) return false;
     if (edge->getOrig()->getDist() + edge->getDriveTime() < edge->getDest()->getDist()) { // we have found a better way to reach v
         edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getDriveTime()); // d[v] = d[u] + w(u,v)
         edge->getDest()->setPath(edge); // set the predecessor of v to u; in this case the edge from u to v

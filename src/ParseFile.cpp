@@ -41,7 +41,10 @@ void Parsefile::parseDistance(std::string filename, Graph<int> *graph) {
         getline(iss,code2,',');
         getline(iss,driveTime,',');
         getline(iss,walkTime,'\r');
-        graph->addBidirectionalEdge(code1,code2,stoi(walkTime),stoi(driveTime));
+        double dt;
+        if(driveTime == "X") dt = INF;
+        else dt = stoi(driveTime);
+        graph->addBidirectionalEdge(code1,code2,stoi(walkTime),dt);
     }
     file.close();
 }
