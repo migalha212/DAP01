@@ -9,16 +9,19 @@ int main(int argc, char* argv []) {
     switch (argc) {
         /* Run program with default files straight away */
     case 1:
-        interface.presentUI();
+        interface.defaultRun();
         break;
+
         /* With the correct argument, the program will open in the interactive mode*/
-        case 2:
-        if(argv[1] == "-i"){
+    case 2:
+        interface.presentUI();
+        if (argv[1] == "-i") {
             std::cout << "interactive" << std::endl;
         }
-        else{
+        else {
             //! error, but run with default files
         }
+        break;
         /* In this case the program will open straight to the interactive menu */
     case 3:
         break;
