@@ -25,7 +25,9 @@ void drivingDijkstra(Graph<T>* g, const int& origin) {
     q.insert(s);
     while (!q.empty()) {
         auto v = q.extractMin();
+        if(v->isVisited()) continue;
         for (auto e : v->getAdj()) {
+            if(e->isSelected()) continue;
             auto oldDist = e->getDest()->getDist();
             if (relax(e)) {
                 if (oldDist == INF) {
@@ -40,20 +42,36 @@ void drivingDijkstra(Graph<T>* g, const int& origin) {
 }
 
 template <class T>
-static std::vector<T> getPath(Graph<T>* g, const int& origin, const int& dest) {
-    std::vector<T> res;
+static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vector<T>& res) {
+    res.clear();
     auto v = g->findVertex(dest);
+    double dist = v->getDist();
     if (v == nullptr || v->getDist() == INF) { // missing or disconnected
-        return res;
+        return -1;
     }
     res.push_back(v->getInfo());
     while (v->getPath() != nullptr) {
+        v->getPath()->setSelected(true);
+        v->getPath()->getReverse()->setSelected(true);
         v = v->getPath()->getOrig();
+        v->setVisited(true);
         res.push_back(v->getInfo());
     }
+    v->setVisited(false);
     reverse(res.begin(), res.end());
     if (res.empty() || res[0] != origin) {
         std::cout << "No Path Found!!" << std::endl;
+        return -1;
     }
-    return res;
+    return dist;
+}
+
+template <class T>
+static void resetGraph(Graph<T>* g){
+    for(Vertex<T>* v : g->getVertexSet()){
+        v->setVisited(false);
+        for(Edge<T>* e : v->getAdj()){
+            e->setSelected(false);
+        }
+    }
 }

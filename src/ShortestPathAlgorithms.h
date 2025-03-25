@@ -17,6 +17,9 @@ void drivingDijkstra(Graph<T>* g, const int& origin);
 
 template <class T>
 //* Auxiliary method from the TP03 exercises
-static std::vector<T> getPath(Graph<T>* g, const int& origin, const int& dest);
+static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vector<T>* res);
+
+template <class T>
+static void resetGraph(Graph<T>* g);
 
 #endif //SHORTESTPATHALGORITHMS_H

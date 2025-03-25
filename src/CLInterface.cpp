@@ -43,21 +43,67 @@ void CLInterface::presentUI() {
     }
 }
 
-void CLInterface::presentPath(vector<int>& v) {
-    for (int i = 0; i < v.size() - 1; i++) {
-        cout << v[i] << ',';
+void CLInterface::defaultRun() {
+    Parsefile parser;
+    // Build Graph
+    Graph<int> g;
+    parser.parseLocation("../small_data/Locations.csv", &g);
+    parser.parseDistance("../small_data/Distances.csv", &g);
+
+    // Parser will parse and Output through another method
+    parser.parseInput("../input.txt", "../output.txt", &g);
+}
+
+void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ofstream& outFile) {
+    outFile << queryName << endl;
+
+    outFile << "Source:" << sNode->getInfo() << endl;
+    outFile << "Destination:" << dNode->getInfo() << endl;
+
+    //* A first drivingDijsktra's is called for the first shortest path
+    resetGraph(g);
+    drivingDijkstra(g, sNode->getInfo());
+
+    vector<int> v;
+    double dist = getPath(g,sNode->getInfo(),dNode->getInfo(),v);
+    outFile << "BestDrivingRoute:";
+    if(dist != -1){
+        outputPath(v, outFile);
+        outFile << '(' << dist << ')' << endl;
     }
-    cout << v[v.size() - 1] << endl;
+    else{
+        outFile << "none" << endl;
+    }
+
+    drivingDijkstra(g, sNode->getInfo());
+    dist = getPath(g, sNode->getInfo(), dNode->getInfo(), v);
+    outFile << "AlternativeDrivingRoute:";
+    if (dist != -1) {
+        outputPath(v, outFile);
+        outFile << '(' << dist << ')' << endl;
+    }
+    else {
+        outFile << "none" << endl;
+    }
+
+    outFile << endl;
+}
+
+void CLInterface::outputPath(vector<int>& v, ofstream& out) {
+    if (v.empty()) return; //TODO
+    for (int i = 0; i < v.size() - 1; i++) {
+        out << v[i] << ',';
+    }
+    out << v[v.size() - 1];
 }
 
 void CLInterface::independantRoute(int sID, int dID, Graph<int>* g) {
-    system("cls"); //clear screen
+    system("cls"); // clear screen
     cout << endl;
     cout << "Source:" << sID << endl;
     cout << "Destination:" << dID << endl;
 
     drivingDijkstra(g, sID);
-    vector<int> res = getPath(g, sID, dID);
+    
     cout << "BestDrivingRoute:";
-    presentPath(res);
 }

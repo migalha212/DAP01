@@ -16,23 +16,25 @@ public:
      * Responsible for calling other "Present" methods depending on user input
      */
     void presentUI();
-    
+
     /**
-     * 
+     *
      */
     void presentInteractiveMenu();
 
     /**
-     * @brief Prints the correct formating for running the program
-     *
-     * @brief if the user missuses when running it from the terminal this method is responsible for showing them how to do it
+     * Triggers the parsing of default Input.txt, Locations.csv and Distances.csv
+     * Executes every query in Input.txt and outputs each of them to Output.txt in order
      */
-    void printArgumentError();
-    
+    void defaultRun();
+
+    void outPutIndependentResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ofstream& outFile);
+
     /**
      *  temp method meant to aid in writing for now
-     */ 
-    void presentPath(std::vector<int>& v);
+     */
+    void outputPath(std::vector<int>& v, std::ofstream& out);
+
 private:
     /* Methods Meant for use in the interactive Menu */
 
