@@ -83,6 +83,44 @@ Vertex<int>* parseVertex(string& value, Graph<int>* g) {
     }
 }
 
+bool parseAvoidVertex(string& value, Graph<int>* g, vector<Vertex<int>*>& nAvoid) {
+    istringstream ss(value);
+    string id;
+    Vertex<int>* v;
+    while (getline(ss, id, ',')) {
+        v = parseVertex(id, g);
+        if (v == nullptr) return false;
+        nAvoid.push_back(v);
+    }
+    return true;
+}
+
+bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
+    istringstream ss(value);
+    string id1, id2, fodder;
+    Vertex<int>* v1, * v2;
+    Edge<int>* e;
+    while (getline(ss, fodder, '(')) {
+        e = nullptr;
+        getline(ss, id1, ',');
+        getline(ss, id2, ')');
+        v1 = parseVertex(id1, g);
+        v2 = parseVertex(id2, g);
+        if (v1 == nullptr || v2 == nullptr) return false;
+        for (Edge<int>* s : v1->getAdj()) {
+            if (s->getDest() == v2) {
+                e = s;
+                break;
+            }
+        }
+        if (e == nullptr) {
+            return false;
+        }
+        eAvoid.push_back(e);
+    }
+    return true;
+}
+
 int Parsefile::parseInput(std::string inputFileName, std::string outputFileName, Graph<int>* g) {
     fstream input(inputFileName);
     ofstream output(outputFileName);
@@ -95,13 +133,13 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
     }
 
     bool err = false, inQuery = false;
-    vector<pair<int, int>> eIgnore = {};
 
     while (getline(input, line)) {
         //* Ignore all empty lines between tests, reset state of error from previous test if needed
         if (line.empty()) {
             err = false;
             inQuery = false;
+            output << endl;
             continue;
         }
 
@@ -122,7 +160,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         else if (err) continue;
 
         //! Start argument search, all arguments should be composed of a string with exactly 1 ':' and can be split by it
-        //* Look for mode, first half of string should be exactly "Mode", second half should be either driving or driving-walking
+        //* Look for Mode, first half of string should be exactly "Mode", second half should be either driving or driving-walking
         Mode mode;
         {
             getline(input, line);
@@ -147,7 +185,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
             }
         }
 
-        //* Look for source, first half of string should be exactly "Source", seconde half should be either a valid id or a valid code
+        //* Look for Source, first half of string should be exactly "Source", seconde half should be either a valid id or a valid code
         Vertex<int>* source;
         {
             getline(input, line);
@@ -202,7 +240,8 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
                 //* upon finding an emptyline with the driving mode we can end the query here
                 if (mode == Mode::driving) {
                     inQuery = false;
-                    interface.outPutIndependentResult(queryName,source,destination,g,output);
+                    interface.outPutIndependentResult(queryName, source, destination, g, output);
+                    continue;
                 }
                 //* if not then there is an error, because the formating for the mode was not completed
                 else {
@@ -212,15 +251,117 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
                 }
             }
         }
+
         //* The line was already read last time, so we can proceed without reading more
-        //* The argument "max walking distance" will only show up in the case of Drive-Walk
-        vector<int> nIgnore = {};
+        //* The argument "max walking distance" will only show up in the case of Driving-Walking
+        double maxWalkingTime = INF;
         if (mode == Mode::drivingwalking) {
+            if (!parseArgument(line, argument, value)) {
+                err = true;
+                printLineError(output, line);
+                continue;
+            }
+            if (argument != "MaxWalkTime") {
+                err = true;
+                printParseError(output, argument, "MaxWalkTime:<int>");
+                continue;
+            }
+            try {
+                maxWalkingTime = stoi(value);
+            }
+            catch (invalid_argument) {
+                err = true;
+                printParseError(output, argument, "MaxWalkTime:<int>");
+                continue;
+            }
+            getline(input, line);
+        }
+
+        //! from this point onward no line can be empty until all arguments/restrictions have been satisfied
+        //* Look for nodes to avoid, first half of string should be exactly AvoidNodes
+        vector<Vertex<int>*> nAvoid = {};
+        {
+            if (!parseArgument(line, argument, value)) {
+                err = true;
+                printLineError(output, line);
+                continue;
+            }
+            if (argument != "AvoidNodes") {
+                err = true;
+                printParseError(output, argument, "AvoidNodes:<id>/<code,<id>/<code>,...");
+                continue;
+            }
+            if (!parseAvoidVertex(value, g, nAvoid)) {
+                err = true;
+                output << "Avoid Nodes had one or more invalid <id>/>code>" << endl;
+                continue;
+            }
+        }
+
+        //* Look for edges to avoid, first half of string should be exactly AvoidSegments
+        vector<Edge<int>*> eAvoid = {};
+        {
+            getline(input,line);
+            if (!parseArgument(line, argument, value)) {
+                err = true;
+                printLineError(output, line);
+                continue;
+            }
+            if (argument != "AvoidSegments") {
+                err = true;
+                printParseError(output, argument, "AvoidSegments:(<id>/<code,<id>/<code>),...");
+                continue;
+            }
+            if (!parseAvoidEdge(value, g, eAvoid)) {
+                err = true;
+                output << "Avoid Segments had one or more invalid <id>/>code>" << endl;
+                continue;
+            }
+        }
+
+        //* Look for Node include, first half of string should be exactly IncludeNode
+        Vertex<int>* must;
+        {
+            getline(input, line);
+            if (!parseArgument(line, argument, value)) {
+                err = true;
+                printLineError(output, line);
+                continue;
+            }
+            else {
+                if (argument != "IncludeNode") {
+                    err = true;
+                    printParseError(output, argument, "IncludeNode:<id>/<code>");
+                    continue;
+                }
+                if (!value.empty()) {
+                    must = parseVertex(value, g);
+                    if (must == nullptr) {
+                        err = true;
+                        printParseError(output, value, "Invalid Id/Code");
+                        continue;
+                    }
+                }
+            }
+        }
+        if (err) continue;
+        //* Final Step is to call the according algorithm
+        switch (mode) {
+        case Mode::driving:
+            // interface.outPutRestrictedResult(queryName, source, destination, nAvoid, eAvoid, must, g, output);
+            output << "restricted completed without errors" << endl;
             //TODO
-            continue;
+            break;
+
+        case Mode::drivingwalking:
+            // interface.outPutEcoResult(queryName, source, destination, maxWalkingTime, nAvoid, eAvoid, must, g, output);
+            output << "Eco-friendly completed without errors" << endl;
+            //TODO
+            break;
         }
     }
 
+    if (inQuery) output << endl << "unexpected EOF before a Query was over" << endl;
     output.close();
     input.close();
     return 0;

@@ -11,3 +11,6 @@ cmake-build-debug/
 # lib
 **/lib/googletest/
 **/Makefile
+
+# test files
+output.txt

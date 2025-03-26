@@ -7,3 +7,25 @@ Destination:8
 Mode:driving
 Source:2
 Destination:4
+
+# 3
+Mode:driving
+Source:papaia
+Destination:banana
+
+# 4 
+Mode:driving
+Source:2
+Destination:4
+AvoidNodes:2,3,4
+AvoidSegments:(3,2),(7,8)
+IncludeNode:
+
+# 5
+Mode:driving-walking
+Source:2
+Destination:5
+MaxWalkTime:10
+AvoidNodes:2,3,4
+AvoidSegments:(3,2),(7,8)
+IncludeNode:2

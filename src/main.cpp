@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv []) {
     CLInterface interface;
-    // \.app locations.csv distances.csv input.txt output.txt
+    // ./app locations.csv distances.csv input.txt output.txt
     switch (argc) {
         /* Run program with default files straight away */
     case 1:
