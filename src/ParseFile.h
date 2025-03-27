@@ -12,15 +12,35 @@
 class Parsefile
 {
 public:
+
     /**
-     * Parse formated information from a csv file into Nodes to be used in a graph
-     * @param filename file to parse
+     * @brief Parses a file to extract location data and populates the given graph.
+     * 
+     * This function reads the specified file and extracts location information,
+     * which is then used to populate the provided graph structure. The graph
+     * is expected to use integers as its node identifiers.
+     * 
+     * @param filename The path to the file containing location data.
+     * @param g A pointer to the graph object where the parsed data will be stored.
+     *          The graph must be initialized before calling this function.
+     * 
+     * @return An integer indicating the success or failure of the operation.
+     *         0 indicates success, while non-zero values indicate errors.
      */
     int parseLocation(std::string filename, Graph<int>* g);
 
     /**
-     * Parse formated information from a csv file into Edges to be used in a graph
-     * @param filename file to parse
+     * @brief Parses a file to extract distance data and populates the given graph.
+     * 
+     * This function reads a file specified by the filename parameter, extracts
+     * distance-related information, and uses it to populate the provided graph
+     * object. The graph is expected to use integers as its node identifiers.
+     * 
+     * @param filename The path to the file containing the distance data.
+     * @param g A pointer to the graph object to be populated with the parsed data.
+     *          The graph should be of type Graph<int>.
+     * @return An integer indicating the success or failure of the parsing operation.
+     *         0 for success and a non-zero value for failure.
      */
     int parseDistance(std::string filename, Graph<int>* g);
 
