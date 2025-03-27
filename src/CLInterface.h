@@ -29,7 +29,7 @@ public:
     void defaultRun();
 
     void outPutIndependentResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ofstream& outFile);
-
+    void outPutRestrictedResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile);
     /**
      *  temp method meant to aid in writing for now
      */

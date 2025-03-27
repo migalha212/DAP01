@@ -1,7 +1,23 @@
+# 4 
+Mode:driving
+Source:2
+Destination:4
+AvoidNodes:3,4
+AvoidSegments:(3,2),(7,8)
+IncludeNode:
+
 # 1
+Mode:driving
+Source:2
+Destination:8
+
+# 8
 Mode:driving
 Source:3
 Destination:8
+AvoidNodes:2
+AvoidSegments:
+IncludeNode:4
 
 # 2
 Mode:driving
@@ -13,13 +29,6 @@ Mode:driving
 Source:papaia
 Destination:banana
 
-# 4 
-Mode:driving
-Source:2
-Destination:4
-AvoidNodes:2,3,4
-AvoidSegments:(3,2),(7,8)
-IncludeNode:
 
 # 5
 Mode:driving-walking

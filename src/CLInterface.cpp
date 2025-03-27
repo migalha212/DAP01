@@ -89,6 +89,29 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
     outFile << endl;
 }
 
+void CLInterface::outPutRestrictedResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*> nAvoid, vector<Edge<int>*> eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile) {
+    outFile << queryName << endl;
+
+    outFile << "Source:" << sNode->getInfo() << endl;
+    outFile << "Destination:" << dNode->getInfo() << endl;
+
+    //* A first drivingDijsktra's is called for the first shortest path
+    resetGraph(g);
+    restrictedDrivingDijkstra(g, sNode->getInfo(), nAvoid, eAvoid, must);
+
+    vector<int> v;
+    double dist = getRestrictedPath(g,sNode->getInfo(),dNode->getInfo(),must,v);
+    outFile << "RestrictedDrivingRoute:";
+    if (dist != -1){
+        outputPath(v, outFile);
+        outFile << '(' << dist << ')' << endl;
+    }
+    else{
+        outFile << "none" << endl;
+    }
+}
+
+
 void CLInterface::outputPath(vector<int>& v, ofstream& out) {
     if (v.empty()) return; //TODO
     for (int i = 0; i < v.size() - 1; i++) {
