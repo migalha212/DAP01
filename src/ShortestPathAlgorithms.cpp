@@ -47,8 +47,9 @@ void drivingDijkstra(Graph<T>* g, const int& origin) {
 
 template <class T>
 void restrictedDrivingDijkstra(Graph<T>* g, const int& origin, vector<Vertex<T>*> nAvoid, vector<Edge<T>*> eAvoid, const Vertex<T>* must) {
+    resetGraph(g);
     prepareRestrictedGraph(nAvoid,eAvoid);
-    if (must != nullptr)
+    if (must)
     {
         drivingDijkstra(g, must->getInfo());
     }
@@ -85,7 +86,7 @@ static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vect
 }
 
 
-template <class T>
+/*template <class T>
 static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const Vertex<T>* must, std::vector<T>& res) {
     res.clear();
     auto v = g->findVertex(dest);
@@ -137,6 +138,38 @@ static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest,
         return getPath(g, origin, dest, res);
     }
 
+}*/
+
+template <class T>
+static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const Vertex<T>* must, std::vector<T>& res){
+    res.clear();
+    auto v_dest = g->findVertex(dest);
+    if(!v_dest || v_dest->getDist() == INF) return -1;
+
+    if(must){
+        auto v_origin = g->findVertex(origin);
+        auto v_must = g->findVertex(must->getInfo());
+
+        if(!v_origin || !v_must) return -1;
+
+        std::vector<T> res1, res2;
+
+        double dist1 = getPath(g, must->getInfo(), origin, res1);
+        double dist2 = getPath(g, must->getInfo(), dest, res2);
+
+        if(dist1 == -1 || dist2 == -1) return -1;
+
+        reverse(res1.begin(), res1.end());
+        if (!res1.empty()) {
+            res1.pop_back();
+        }
+        res.insert(res.end(), res1.begin(), res1.end());
+        res.insert(res.end(), res2.begin(), res2.end());
+
+        return dist1 + dist2;
+    }
+
+    return getPath(g, origin, dest, res);
 }
 
 template <class T> 
