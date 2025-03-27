@@ -1,5 +1,9 @@
 #include "ShortestPathAlgorithms.h"
+#include "ParseFile.h"
+
 using namespace std;
+
+extern Vertex<int>* must;
 
 template <class T>
 bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
@@ -42,6 +46,20 @@ void drivingDijkstra(Graph<T>* g, const int& origin) {
 }
 
 template <class T>
+void restrictedDrivingDijkstra(Graph<T>* g, const int& origin, vector<Vertex<T>*> nAvoid, vector<Edge<T>*> eAvoid, const Vertex<T>* must) {
+    prepareRestrictedGraph(nAvoid,eAvoid);
+    if (must != nullptr)
+    {
+        drivingDijkstra(g, must->getInfo());
+    }
+    
+    else 
+    {
+        drivingDijkstra(g, origin);
+    }
+}
+
+template <class T>
 static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vector<T>& res) {
     res.clear();
     auto v = g->findVertex(dest);
@@ -66,12 +84,78 @@ static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vect
     return dist;
 }
 
+
 template <class T>
+static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const Vertex<T>* must, std::vector<T>& res) {
+    res.clear();
+    auto v = g->findVertex(dest);
+    double dist = v->getDist();
+    if (v == nullptr || v->getDist() == INF) { // missing or disconnected
+        return -1;
+    }
+    if (must != nullptr)
+    {
+        v = g->findVertex(origin);
+        res.push_back(v->getInfo());
+        dist += v->getDist();
+        while (v->getPath() != nullptr) {
+            v->getPath()->setSelected(true);
+            v->getPath()->getReverse()->setSelected(true);
+            v = v->getPath()->getOrig();
+            v->setVisited(true);
+            res.push_back(v->getInfo());
+            if (must == v)
+            {
+                break;
+            }
+            
+        }
+
+        v->setVisited(false);
+        
+        v = g->findVertex(dest);
+        res.push_back(v->getInfo());
+        while (v->getPath()->getOrig() != must) {
+            v->getPath()->setSelected(true);
+            v->getPath()->getReverse()->setSelected(true);
+            v = v->getPath()->getOrig();
+            v->setVisited(true);
+            res.push_back(v->getInfo());
+        }
+        
+        v->setVisited(false);
+    
+        if (res.empty() || res[0] != origin) {
+            std::cout << "No Path Found!!" << std::endl;
+            return -1;
+        }
+        return dist;
+    }
+
+    else 
+    {
+        return getPath(g, origin, dest, res);
+    }
+
+}
+
+template <class T> 
 static void resetGraph(Graph<T>* g){
     for(Vertex<T>* v : g->getVertexSet()){
         v->setVisited(false);
         for(Edge<T>* e : v->getAdj()){
             e->setSelected(false);
         }
+    }
+}
+
+template <class T>
+static void prepareRestrictedGraph(vector<Vertex<T>*> nA, vector<Edge<T>*> nE) {
+    for (Vertex<T>* v : nA){
+        v->setVisited(true);
+    }
+    for (Edge<T>* e: nE)
+    {
+        e->setSelected(true);
     }
 }

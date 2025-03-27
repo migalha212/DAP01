@@ -2,6 +2,9 @@
 #include "CLInterface.h"
 using namespace std;
 
+vector<Vertex<int>*> nAvoid = {};
+vector<Edge<int>*> eAvoid = {};
+Vertex<int>* must;
 
 int Parsefile::parseLocation(std::string filename, Graph<int>* graph) {
     fstream file(filename);
@@ -139,6 +142,9 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         if (line.empty()) {
             err = false;
             inQuery = false;
+            nAvoid.clear();
+            eAvoid.clear();
+            must = nullptr;
             output << endl;
             continue;
         }
@@ -279,7 +285,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
 
         //! from this point onward no line can be empty until all arguments/restrictions have been satisfied
         //* Look for nodes to avoid, first half of string should be exactly AvoidNodes
-        vector<Vertex<int>*> nAvoid = {};
+
         {
             if (!parseArgument(line, argument, value)) {
                 err = true;
@@ -299,7 +305,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         }
 
         //* Look for edges to avoid, first half of string should be exactly AvoidSegments
-        vector<Edge<int>*> eAvoid = {};
+
         {
             getline(input,line);
             if (!parseArgument(line, argument, value)) {
@@ -320,7 +326,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         }
 
         //* Look for Node include, first half of string should be exactly IncludeNode
-        Vertex<int>* must;
+        
         {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
@@ -348,7 +354,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         //* Final Step is to call the according algorithm
         switch (mode) {
         case Mode::driving:
-            // interface.outPutRestrictedResult(queryName, source, destination, nAvoid, eAvoid, must, g, output);
+            interface.outPutRestrictedResult(queryName, source, destination, nAvoid, eAvoid, must, g, output);
             output << "restricted completed without errors" << endl;
             //TODO
             break;

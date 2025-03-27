@@ -16,10 +16,19 @@ template <class T>
 void drivingDijkstra(Graph<T>* g, const int& origin);
 
 template <class T>
+void restrictedDrivingDijkstra(Graph<T>* g, const int& origin, std::vector<Vertex<T>*> nAvoid, std::vector<Edge<T>*> eAvoid, const Vertex<T>* must);
+
+template <class T>
 //* Auxiliary method from the TP03 exercises
 static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vector<T>* res);
 
 template <class T>
+static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const int& must, std::vector<T>& res);
+
+template <class T>
 static void resetGraph(Graph<T>* g);
+
+template <class T>
+static void prepareRestrictedGraph(std::vector<Vertex<T>*> nA, std::vector<Edge<T>*> nE);
 
 #endif //SHORTESTPATHALGORITHMS_H
