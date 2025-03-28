@@ -24,9 +24,17 @@ Destination:banana
 
 # 5
 Mode:driving-walking
-Source:2
+Source:8
 Destination:5
-MaxWalkTime:10
-AvoidNodes:2,3,4
-AvoidSegments:(3,2),(7,8)
-IncludeNode:2
+MaxWalkTime:18
+AvoidNodes:
+AvoidSegments:
+
+# 6
+Mode:driving-walking
+Source:8
+Destination:5
+MaxWalkTime:5
+AvoidNodes:
+AvoidSegments:
+

@@ -157,7 +157,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
             }
             else {
                 err = true;
-                output << "Unexpected Input in begining of Query" << endl
+                output << "Unexpected Input in begining or end of Query" << endl
                     << "All queries should begin with '#' followed by the test name" << endl;
                 continue;
             }
@@ -307,7 +307,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         //* Look for edges to avoid, first half of string should be exactly AvoidSegments
 
         {
-            getline(input,line);
+            getline(input, line);
             if (!parseArgument(line, argument, value)) {
                 err = true;
                 printLineError(output, line);
@@ -326,8 +326,8 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         }
 
         //* Look for Node include, first half of string should be exactly IncludeNode
-        
-        {
+
+        if(mode == Mode::driving) {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
                 err = true;
@@ -350,19 +350,18 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
                 }
             }
         }
+
         if (err) continue;
         //* Final Step is to call the according algorithm
         switch (mode) {
         case Mode::driving:
             interface.outPutRestrictedResult(queryName, source, destination, nAvoid, eAvoid, must, g, output);
-            output << "restricted completed without errors" << endl;
-            //TODO
+            inQuery = false;
             break;
 
         case Mode::drivingwalking:
-            // interface.outPutEcoResult(queryName, source, destination, maxWalkingTime, nAvoid, eAvoid, must, g, output);
-            output << "Eco-friendly completed without errors" << endl;
-            //TODO
+            interface.outPutEcoResult(queryName, source, destination, nAvoid, eAvoid, maxWalkingTime, g, output);
+            inQuery = false;
             break;
         }
     }
