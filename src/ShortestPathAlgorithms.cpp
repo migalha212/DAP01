@@ -16,6 +16,16 @@ bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
 }
 
 template <class T>
+bool walkingRelax(Edge<T>* edge){
+    if (edge->getOrig()->getDist() + edge->getWalkTime() < edge->getDest()->getDist()) { // we have found a better way to reach v
+        edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getWalkTime()); // d[v] = d[u] + w(u,v)
+        edge->getDest()->setPath(edge); // set the predecessor of v to u; in this case the edge from u to v
+        return true;
+    }
+    return false;
+}
+
+template <class T>
 void drivingDijkstra(Graph<T>* g, Vertex<T>* origin) {
     // Initialize the vertices
     for (auto v : g->getVertexSet()) {
@@ -189,5 +199,54 @@ static void prepareRestrictedGraph(vector<Vertex<T>*> nA, vector<Edge<T>*> nE) {
     }
     for (Edge<T>* e : nE) {
         e->setSelected(true);
+    }
+}
+
+enum Distance {
+    walk,
+    drive,
+};
+
+template <class T>
+static void dijkstra(Graph<T>* g, Vertex<T>* origin, Distance d) {
+    // Initialize the vertices
+    for (auto v : g->getVertexSet()) {
+        v->setDist(INF);
+        v->setPath(nullptr);
+    }
+    auto s = origin;
+    s->setDist(0);
+
+    MutablePriorityQueue<Vertex<T>> q;
+    q.insert(s);
+    while (!q.empty()) {
+        auto v = q.extractMin();
+        if (v->isVisited()) continue; // Ignore vertices that are marked as visited
+        for (auto e : v->getAdj()) {
+            if (e->isSelected()) continue; // Ignore edges that are marked as selected
+            auto oldDist = e->getDest()->getDist();
+            switch (d) {
+                case Distance::drive:
+                    if (relax(e)) {
+                        if (oldDist == INF) {
+                            q.insert(e->getDest());
+                        }
+                        else {
+                            q.decreaseKey(e->getDest());
+                        }
+                    }
+                    break;
+                case Distance::walk:
+                    if (walkingRelax(e)) {
+                        if (oldDist == INF) {
+                            q.insert(e->getDest());
+                        }
+                        else {
+                            q.decreaseKey(e->getDest());
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }

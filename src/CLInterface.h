@@ -24,7 +24,7 @@ public:
 
     /**
      * @brief Executes the default run sequence for the application.
-     * 
+     *
      * This function is responsible for initiating and managing the
      * standard execution flow of the program. It may include tasks
      * such as initializing resources, processing data, and handling
@@ -32,7 +32,7 @@ public:
      */
     void defaultRun();
 
-    
+
     /**
      * @brief Outputs the result of an independent query operation to a file.
      *
@@ -64,6 +64,7 @@ public:
      */
     void outPutRestrictedResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile);
 
+    void outPutEcoResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, const double& maxWalkTime, Graph<int>* g, std::ofstream& outFile);
     /**
      *  temp method meant to aid in writing for now
      */

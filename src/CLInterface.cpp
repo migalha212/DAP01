@@ -65,13 +65,13 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
     drivingDijkstra(g, sNode);
 
     vector<int> v;
-    double dist = getPath(g,sNode,dNode,v);
+    double dist = getPath(g, sNode, dNode, v);
     outFile << "BestDrivingRoute:";
-    if(dist != -1){
+    if (dist != -1) {
         outputPath(v, outFile);
         outFile << '(' << dist << ')' << endl;
     }
-    else{
+    else {
         outFile << "none" << endl;
     }
 
@@ -100,14 +100,75 @@ void CLInterface::outPutRestrictedResult(std::string& queryName, Vertex<int>* sN
     restrictedDrivingDijkstra(g, sNode, nAvoid, eAvoid, must);
 
     vector<int> v;
-    double dist = getRestrictedPath(g,sNode,dNode,must,v);
+    double dist = getRestrictedPath(g, sNode, dNode, must, v);
     outFile << "RestrictedDrivingRoute:";
-    if (dist != -1){
+    if (dist != -1) {
         outputPath(v, outFile);
         outFile << '(' << dist << ')' << endl;
     }
-    else{
+    else {
         outFile << "none" << endl;
+    }
+}
+
+struct parkingNode
+{
+    Vertex<int>* node;
+    double dist;
+    vector<int> path;
+};
+
+void CLInterface::outPutEcoResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, const double& maxWalkTime, Graph<int>* g, std::ofstream& outFile) {
+    outFile << queryName << endl;
+
+    outFile << "Source:" << sNode->getInfo() << endl;
+    outFile << "Destination:" << dNode->getInfo() << endl;
+
+    //* First the graph is reset and then set up for the eco-friendly route
+    resetGraph(g);
+    prepareRestrictedGraph(nAvoid, eAvoid);
+
+    //* First dijkstra's from the destination node to each of the parking nodes
+    dijkstra(g, dNode, Distance::walk);
+    // TODO: check if the distance is less than maxWalkTime and save all paths that do so, if not return none
+    vector<parkingNode> parkingNodes;
+    for (auto v : g->getVertexSet()) {
+        if (v->getParking() == 1 && v->getDist() <= maxWalkTime) {
+            parkingNode pNode;
+            pNode.node = v;
+            pNode.dist = v->getDist();
+            double dist = getPath(g, dNode, v, pNode.path);
+            if (dist != -1) {
+                parkingNodes.push_back(pNode);
+            }
+        }
+    }
+
+    if(parkingNodes.empty()) {
+        outFile << "Message: no possible route with max. walking time of " << maxWalkTime << " minutes." << endl;
+        return;
+    }
+
+    resetGraph(g);
+    prepareRestrictedGraph(nAvoid, eAvoid);
+
+    //* Then dijkstra's from the source node to each of the parking nodes
+    dijkstra(g, sNode, Distance::drive);
+    // Todo: complete the paths that meet the requirement and present the best
+    for (auto& pNode : parkingNodes) {
+        outFile << "Walking Route:";
+        outputPath(pNode.path, outFile);
+        outFile << '(' << pNode.dist << ')' << endl;
+        pNode.path.clear();
+        pNode.dist += pNode.node->getDist();
+        if (pNode.dist == INF) continue; // no path to parking node
+        double dist = getPath(g, sNode, pNode.node, pNode.path);
+        if (dist != -1) {
+            outFile << "Driving Route:";
+            outputPath(pNode.path, outFile);
+            outFile << '(' << pNode.node->getDist() << ')' << endl;
+            outFile << "TotalDistance:" << pNode.dist << endl;
+        }
     }
 }
 
