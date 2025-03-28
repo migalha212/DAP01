@@ -62,10 +62,10 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
 
     //* A first drivingDijsktra's is called for the first shortest path
     resetGraph(g);
-    drivingDijkstra(g, sNode->getInfo());
+    drivingDijkstra(g, sNode);
 
     vector<int> v;
-    double dist = getPath(g,sNode->getInfo(),dNode->getInfo(),v);
+    double dist = getPath(g,sNode,dNode,v);
     outFile << "BestDrivingRoute:";
     if(dist != -1){
         outputPath(v, outFile);
@@ -75,8 +75,8 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
         outFile << "none" << endl;
     }
 
-    drivingDijkstra(g, sNode->getInfo());
-    dist = getPath(g, sNode->getInfo(), dNode->getInfo(), v);
+    drivingDijkstra(g, sNode);
+    dist = getPath(g, sNode, dNode, v);
     outFile << "AlternativeDrivingRoute:";
     if (dist != -1) {
         outputPath(v, outFile);
@@ -97,10 +97,10 @@ void CLInterface::outPutRestrictedResult(std::string& queryName, Vertex<int>* sN
 
     //* A first drivingDijsktra's is called for the first shortest path
     resetGraph(g);
-    restrictedDrivingDijkstra(g, sNode->getInfo(), nAvoid, eAvoid, must);
+    restrictedDrivingDijkstra(g, sNode, nAvoid, eAvoid, must);
 
     vector<int> v;
-    double dist = getRestrictedPath(g,sNode->getInfo(),dNode->getInfo(),must,v);
+    double dist = getRestrictedPath(g,sNode,dNode,must,v);
     outFile << "RestrictedDrivingRoute:";
     if (dist != -1){
         outputPath(v, outFile);
@@ -125,8 +125,7 @@ void CLInterface::independantRoute(int sID, int dID, Graph<int>* g) {
     cout << endl;
     cout << "Source:" << sID << endl;
     cout << "Destination:" << dID << endl;
-
-    drivingDijkstra(g, sID);
-    
+    Vertex<int>* sNode = g->findVertex(sID);
+    drivingDijkstra(g, sNode);
     cout << "BestDrivingRoute:";
 }
