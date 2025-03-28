@@ -13,17 +13,17 @@ bool relax(Edge<T>* edge);
 
 template <class T>
 //* Simple dijkstra's Single Source Shortest Path Algorithm from the TP03 exercises
-void drivingDijkstra(Graph<T>* g, const int& origin);
+void drivingDijkstra(Graph<T>* g, Vertex<T>* origin);
 
 template <class T>
-void restrictedDrivingDijkstra(Graph<T>* g, const int& origin, std::vector<Vertex<T>*> nAvoid, std::vector<Edge<T>*> eAvoid, const Vertex<T>* must);
+void restrictedDrivingDijkstra(Graph<T>* g, Vertex<T>* origin, std::vector<Vertex<T>*> nAvoid, std::vector<Edge<T>*> eAvoid, Vertex<T>* must);
 
 template <class T>
 //* Auxiliary method from the TP03 exercises
-static double getPath(Graph<T>* g, const int& origin, const int& dest, std::vector<T>* res);
+static double getPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, std::vector<T>& res);
 
 template <class T>
-static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const int& must, std::vector<T>& res);
+static double getRestrictedPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, Vertex<T>* must, std::vector<T>& res);
 
 template <class T>
 static void resetGraph(Graph<T>* g);
