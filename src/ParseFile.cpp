@@ -70,6 +70,7 @@ bool parseArgument(string& line, string& argument, string& value) {
 
 void printLineError(ofstream& out, string line) {
     out << "Invalid line" << endl << "-> " << line << endl << "Was empty" << endl;
+    out << endl;
 }
 
 void printParseError(ofstream& out, string& value, const string& actual) {
@@ -194,7 +195,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -218,7 +218,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -260,7 +259,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         double maxWalkingTime = INF;
         if (mode == Mode::drivingwalking) {
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -285,7 +283,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
 
         {
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -306,7 +303,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -327,7 +323,6 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         if (mode == Mode::driving) {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
-                err = true;
                 printLineError(output, line);
                 continue;
             }
@@ -362,7 +357,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
             if (!line.empty())
                 if (line != "Aproximate") {
                     err = true;
-                    printParseError(output, argument, "Aproximate");
+                    printParseError(output, line, "Aproximate");
                     continue;
                 }
                 else

@@ -83,13 +83,39 @@ Mode:driving
 Source:papaia
 Destination:banana
 
-# 4
-Mode:driving-walking
-Source:2
-Destination:4
+# Missing Mode
 
-# 5
+# Missing Source
+Mode:driving
+
+# Missing Destination
+Mode:driving
+Source:8
+
+# Missing AvoidNodes
+Mode:driving
+Source:3
+Destination:6
+
+# Missing AvoidSegments
+Mode:driving
+Source:7
+Destination:1
+AvoidNodes:
+
+# Missing IncludeNode
 Mode:driving
 Source:2
-Destination:4
+Destination:9
 AvoidNodes:
+AvoidSegments:
+
+# Missing MaxWalkTime
+Mode:driving-walking
+Source:8
+Destination:5
+
+# 2
+Mode:drivin
+Source:2
+Destination:4
