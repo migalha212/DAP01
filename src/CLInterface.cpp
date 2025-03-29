@@ -60,10 +60,10 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
     system("cls"); // clear screen
     cout << endl;
     cout << "Independent Route Planning" << endl;
-    cout << "Please enter the source node:" << endl;
+    cout << "Please enter the source node: ";
     string source;
     cin >> source;
-    cout << "Please enter the destination node:" << endl;
+    cout << "Please enter the destination node: ";
     string destination;
     cin >> destination;
     
@@ -84,9 +84,9 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
         cout << "Invalid node input." << endl;
         return;
     }
-    outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
+    cout << endl;
+    outPutIndependentResult(sNodePtr, dNodePtr, g, cout);
     
-    cout << "Output written to output_interactive.txt" << endl;
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -99,37 +99,37 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
     system("cls");
     cout << endl;
     cout << "Restricted Route Planning" << endl;
-    cout << "Please enter the source node:" << endl;
+    cout << "Please enter the source node: ";
     string source;
     cin >> source;
-    cout << "Please enter the destination node:" << endl;
+    cout << "Please enter the destination node: ";
     string destination;
     cin >> destination;
-    cout << "Please enter how many nodes to avoid:" << endl;
+    cout << "Please enter how many nodes to avoid: ";
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
     vector<Vertex<int>*> nAvoid;
     for(int i = 0; i < numNodes; i++) {
-        cout << "Please enter the node to avoid:" << endl;
+        cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
         Vertex<int>* v = parseVertex(node, g);
         nAvoid.push_back(v);
     }
-    cout << "Please enter how many edges to avoid:" << endl;
+    cout << "Please enter how many edges to avoid: ";
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
     vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edge to avoid in the format v1,v2 :" << endl;
+        cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
         cin >> edge;
         Edge<int>* e = parseEdge(edge, g);
         eAvoid.push_back(e);
     }
-    cout << "Please enter the node that must be included (enter 0 if not desired):" << endl;
+    cout << "Please enter the node that must be included (enter 0 if not desired): ";
     string mustNode;
     cin >> mustNode;
     if(mustNode != "0"){
@@ -151,8 +151,8 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
         cout << "Invalid node input." << endl;
         return;
     }
+    cout << endl;
     outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, cout);
-    cout << "Output written to output_interactive.txt" << endl;
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -165,41 +165,41 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
     system("cls");
     cout << endl;
     cout << "Eco-Friendly Route Planning" << endl;
-    cout << "Please enter the source node:" << endl;
+    cout << "Please enter the source node: ";
     string source;
     cin >> source;
-    cout << "Please enter the destination node:" << endl;
+    cout << "Please enter the destination node: ";
     string destination;
     cin >> destination;
-    cout << "Please enter how many nodes to avoid:" << endl;
+    cout << "Please enter how many nodes to avoid: ";
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
     vector<Vertex<int>*> nAvoid;
     for(int i = 0; i < numNodes; i++) {
-        cout << "Please enter the node to avoid:" << endl;
+        cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
         Vertex<int>* v = parseVertex(node, g);
         nAvoid.push_back(v);
     }
-    cout << "Please enter how many edges to avoid:" << endl;
+    cout << "Please enter how many edges to avoid: ";
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
     vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edge to avoid in the format v1,v2 :" << endl;
+        cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
         cin >> edge;
         Edge<int>* e = parseEdge(edge, g);
         eAvoid.push_back(e);
     }
-    cout << "Please enter the maximum walking time:" << endl;
+    cout << "Please enter the maximum walking time: ";
     string maxWalkTimeStr;
     cin >> maxWalkTimeStr;
     double maxWalkTime = parseInt(maxWalkTimeStr);
-    cout << "Please enter if you want the approximate path (y/n):" << endl;
+    cout << "Please enter if you want the approximate path (y/n): ";
     string aproxStr;
     cin >> aproxStr;
     bool aprox = false;
@@ -227,8 +227,8 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
         return;
     }
 
-    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
-    cout << "Output written to output_interactive.txt" << endl;
+    cout << endl;
+    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, cout);
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -248,7 +248,7 @@ void CLInterface::defaultRun() {
     parser.parseInput("../input.txt", "../output.txt", &g);
 }
 
-void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ofstream& outFile) {
+void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -317,7 +317,7 @@ bool parkingSort(const parkingNode& a, const parkingNode& b) {
     return false;
 }
 
-void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, ofstream& outFile) {
+void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
