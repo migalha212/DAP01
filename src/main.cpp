@@ -15,7 +15,13 @@ int main(int argc, char* argv []) {
         /* With the correct argument, the program will open in the interactive mode*/
     case 2:
         if (std::string(argv[1]) == "-i") {
-            interface.presentUI("","");
+            std::string outputFileName = "../output_interactive.txt";
+            std::ofstream outFile(outputFileName);
+            if (!outFile.is_open()) {
+            std::cout << "Error opening output file." << std::endl;
+            exit(1);
+        }
+            interface.presentUI("","", outFile);
         }
         else if (std::string(argv[1]) == "-h") {
             std::cout << "Usage: ./app -i" << std::endl;
@@ -31,7 +37,7 @@ int main(int argc, char* argv []) {
         break;
         /* In this case the program will open straight to the interactive menu */
     case 3:
-        interface.presentUI(argv[1], argv[2]);
+        //interface.presentUI(argv[1], argv[2], outFile);
         break;
         // In this case the program will skip to the output step as all arguments are present
     case 4:
