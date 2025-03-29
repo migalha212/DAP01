@@ -1,6 +1,6 @@
 #include "CLInterface.h"
 #include "ShortestPathAlgorithms.cpp"
-#include "ParseFile.cpp"
+#include "ParseFile.h"
 using namespace std;
 
 int parseInt(string& value) {
@@ -129,7 +129,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outfile){
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
-    vector<Vertex<int>*> nAvoid;
+    vector<Vertex<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
         cout << "Please enter the edge to avoid:" << endl;
         string edge;
