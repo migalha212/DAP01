@@ -4,7 +4,7 @@
 using namespace std;
 
 
-void CLInterface::presentUI(const string& locations, const string& distances, ofstream& outFile) {
+void CLInterface::presentUI(const string& locations, const string& distances, ostream& outFile) {
     Graph<int> g;
     Parsefile parser;
     if (locations.empty() || distances.empty()) {
@@ -29,7 +29,7 @@ void CLInterface::presentUI(const string& locations, const string& distances, of
         string choice;
         cin >> choice;
         if(choice == "q"){
-            outFile.close(); 
+            //outFile.close(); 
             exit(0);}
         int choiceInt = parseInt(choice);
         while (choiceInt == -1 || (choiceInt > 3 || choiceInt < 1)) {
@@ -41,13 +41,13 @@ void CLInterface::presentUI(const string& locations, const string& distances, of
         // TODO build logic for all 3 routes
         switch (choiceInt) {
         case 1:
-            independantRoute(&g, outFile);
+            independantRoute(&g, outFile, locations, distances);
             break;
         case 2:
-            restrictedRoute(&g, outFile);
+            restrictedRoute(&g, outFile, locations, distances);
             break;
         case 3:
-            ecoFriendlyRoute(&g, outFile);
+            ecoFriendlyRoute(&g, outFile, locations, distances);
             break;
         default:
             return;
@@ -56,7 +56,7 @@ void CLInterface::presentUI(const string& locations, const string& distances, of
     }
 }
 
-void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
+void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances) {
     system("cls"); // clear screen
     cout << endl;
     cout << "Independent Route Planning" << endl;
@@ -67,11 +67,6 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
     string destination;
     cin >> destination;
     
-    
-    if (!outFile.is_open()) {
-        cout << "Error opening output file." << endl;
-        return;
-    }
     int sNode = stoi(source);
     int dNode = stoi(destination);
     if (sNode == -1 || dNode == -1) {
@@ -85,17 +80,17 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
         return;
     }
     cout << endl;
-    outPutIndependentResult(sNodePtr, dNodePtr, g, cout);
+    outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
     
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
     system("cls"); // clear screen
     cout << endl;
-    CLInterface::presentUI("", "", outFile); // return to the main menu
+    CLInterface::presentUI(locations, distances, outFile); // return to the main menu
 }
 
-void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
+void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances){
     system("cls");
     cout << endl;
     cout << "Restricted Route Planning" << endl;
@@ -168,16 +163,16 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
         return;
     }
     cout << endl;
-    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, cout);
+    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
     system("cls"); // clear screen
     cout << endl;
-    CLInterface::presentUI("", "", outFile); // return to the main menu
+    CLInterface::presentUI(locations, distances, outFile); // return to the main menu
 }
 
-void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
+void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances){
     system("cls");
     cout << endl;
     cout << "Eco-Friendly Route Planning" << endl;
@@ -264,24 +259,30 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
     }
 
     cout << endl;
-    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, cout);
+    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
     system("cls"); // clear screen
     cout << endl;
-    CLInterface::presentUI("", "", outFile); // return to the main menu
+    CLInterface::presentUI(locations, distances, outFile); // return to the main menu
 }
 
-void CLInterface::defaultRun() {
-    Parsefile parser;
-    // Build Graph
+void CLInterface::defaultRun(const std::string& locations, const std::string& distances, const std::string& inputFile, const std::string& outputFile) {
     Graph<int> g;
-    parser.parseLocation("../small_data/Locations.csv", &g);
-    parser.parseDistance("../small_data/Distances.csv", &g);
-
-    // Parser will parse and Output through another method
-    parser.parseInput("../input.txt", "../output.txt", &g);
+    Parsefile parser;
+    if (locations.empty() || distances.empty()) {
+        parser.parseLocation("../small_data/Locations.csv", &g);
+        parser.parseDistance("../small_data/Distances.csv", &g);
+        parser.parseInput("../input.txt", "../output.txt", &g);
+    }
+    else {
+        parser.parseLocation(locations, &g);
+        parser.parseDistance(distances, &g);
+        parser.parseInput(inputFile, outputFile, &g);
+    }
+    
+    
 }
 
 void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ostream& outFile) {
