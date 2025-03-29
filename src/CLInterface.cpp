@@ -103,7 +103,7 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
     CLInterface::presentUI("", "", outFile); // return to the main menu
 }
 
-void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outfile){
+void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
     system("cls");
     cout << endl;
     cout << "Restricted Route Planning" << endl;
@@ -129,13 +129,44 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outfile){
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
-    vector<Vertex<int>*> eAvoid;
+    vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edge to avoid:" << endl;
+        cout << "Please enter the edge to avoid in the format v1,v2 :" << endl;
         string edge;
         cin >> edge;
-
+        Edge<int>* e = parseEdge(edge, g);
+        eAvoid.push_back(e);
     }
+    cout << "Please enter the node that must be included (enter 0 if not desired):" << endl;
+    string mustNode;
+    cin >> mustNode;
+    if(mustNode != "0"){
+        Vertex<int>* must = parseVertex(mustNode, g);
+        if (must == nullptr) {
+            cout << "Invalid node input." << endl;
+            return;
+        }
+    }
+    int sNode = stoi(source);
+    int dNode = stoi(destination);
+    if (sNode == -1 || dNode == -1) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+    Vertex<int>* sNodePtr = g->findVertex(sNode);
+    Vertex<int>* dNodePtr = g->findVertex(dNode);
+    if (sNodePtr == nullptr || dNodePtr == nullptr) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
+    cout << "Output written to output_interactive.txt" << endl;
+    cout << "Press any key to continue..." << endl;
+    cin.ignore(); // clear the newline character from the input buffer
+    cin.get(); // wait for user input
+    system("cls"); // clear screen
+    cout << endl;
+    CLInterface::presentUI("", "", outFile); // return to the main menu
 }
 
 
@@ -203,6 +234,8 @@ void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode,
     else {
         outFile << "none" << endl;
     }
+
+    outFile << endl;
 }
 
 struct parkingNode
