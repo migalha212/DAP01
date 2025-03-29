@@ -14,7 +14,7 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid);
 void printParseError(ofstream& out, string& value, const string& actual);
 void printLineError(ofstream& out, string line);
 
-int Parsefile::parseLocation(const std::string& filename, Graph<int>* graph) {
+int Parsefile::parseLocation(const string& filename, Graph<int>* graph) {
     fstream file(filename);
     string line;
     getline(file, line); // first line is ignored, header
@@ -36,7 +36,7 @@ int Parsefile::parseLocation(const std::string& filename, Graph<int>* graph) {
     return 0;
 }
 
-int Parsefile::parseDistance(const std::string& filename, Graph<int>* graph) {
+int Parsefile::parseDistance(const string& filename, Graph<int>* graph) {
     fstream file(filename);
     string line;
     getline(file, line); // first line is ignored, header
@@ -90,6 +90,14 @@ Edge<int>* parseEdge(string& value, Graph<int>* g) {
     return e;
 }
 
+int parseInt(string& value) {
+    try {
+        return stoi(value);
+    }
+    catch (invalid_argument) {
+        return -1;
+    }
+}
 
 bool parseArgument(string& line, string& argument, string& value) {
     if (count(line.begin(), line.end(), ':') != 1) return false;
@@ -146,7 +154,7 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
     return true;
 }
 
-int Parsefile::parseInput(const std::string& inputFileName,const std::string& outputFileName, Graph<int>* g) {
+int Parsefile::parseInput(const string& inputFileName,const string& outputFileName, Graph<int>* g) {
     fstream input(inputFileName);
     ofstream output(outputFileName);
     string line;

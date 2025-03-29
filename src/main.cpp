@@ -37,13 +37,16 @@ int main(int argc, char* argv []) {
         break;
         /* In this case the program will open straight to the interactive menu */
     case 3:
-        //interface.presentUI(argv[1], argv[2], outFile);
+        //interface.presentUI(argv[1], argv[2], cout);
+        //interface.presentUI("", "", outfile);
         break;
         // In this case the program will skip to the output step as all arguments are present
     case 4:
+        //interface.presentUI(argv[1], argv[2], outfile);
         break;
         // Same as case 4, but the default will be to output to a file, which should be the final argument
     case 5:
+        //defaultrun(argv[1], argv[2], infile, outfile);
         break;
         // Can either End the program right away with an error message
         // or send the error message and send the user to the interactive menu

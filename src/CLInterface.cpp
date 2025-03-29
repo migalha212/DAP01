@@ -3,14 +3,6 @@
 #include "ParseFile.h"
 using namespace std;
 
-int parseInt(string& value) {
-    try {
-        return stoi(value);
-    }
-    catch (invalid_argument) {
-        return -1;
-    }
-}
 
 void CLInterface::presentUI(const string& locations, const string& distances, ofstream& outFile) {
     Graph<int> g;
@@ -24,7 +16,7 @@ void CLInterface::presentUI(const string& locations, const string& distances, of
         parser.parseDistance(distances, &g);
     }
 
-    
+
     while (true) {
         
         system("cls"); // clears the terminal
@@ -159,7 +151,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
         cout << "Invalid node input." << endl;
         return;
     }
-    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
+    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, cout);
     cout << "Output written to output_interactive.txt" << endl;
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
@@ -290,7 +282,7 @@ void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode
     outFile << endl;
 }
 
-void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile) {
+void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -325,7 +317,7 @@ bool parkingSort(const parkingNode& a, const parkingNode& b) {
     return false;
 }
 
-void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ofstream& outFile) {
+void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, ofstream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -418,7 +410,7 @@ void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::v
     }
 }
 
-void CLInterface::outputPath(vector<int>& v, ofstream& out) {
+void CLInterface::outputPath(vector<int>& v, ostream& out) {
     if (v.empty()) return;
     for (int i = 0; i < v.size() - 1; i++) {
         out << v[i] << ',';
