@@ -1,5 +1,6 @@
 #include "CLInterface.h"
 #include "ShortestPathAlgorithms.cpp"
+#include "ParseFile.cpp"
 using namespace std;
 
 int parseInt(string& value) {
@@ -100,6 +101,41 @@ void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
     system("cls"); // clear screen
     cout << endl;
     CLInterface::presentUI("", "", outFile); // return to the main menu
+}
+
+void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outfile){
+    system("cls");
+    cout << endl;
+    cout << "Restricted Route Planning" << endl;
+    cout << "Please enter the source node:" << endl;
+    string source;
+    cin >> source;
+    cout << "Please enter the destination node:" << endl;
+    string destination;
+    cin >> destination;
+    cout << "Please enter how many nodes to avoid:" << endl;
+    string avoidNodes;
+    cin >> avoidNodes;
+    int numNodes = parseInt(avoidNodes);
+    vector<Vertex<int>*> nAvoid;
+    for(int i = 0; i < numNodes; i++) {
+        cout << "Please enter the node to avoid:" << endl;
+        string node;
+        cin >> node;
+        Vertex<int>* v = parseVertex(node, g);
+        nAvoid.push_back(v);
+    }
+    cout << "Please enter how many edges to avoid:" << endl;
+    string avoidEdges;
+    cin >> avoidEdges;
+    int numEdges = parseInt(avoidEdges);
+    vector<Vertex<int>*> nAvoid;
+    for(int i = 0; i < numEdges; i++) {
+        cout << "Please enter the edge to avoid:" << endl;
+        string edge;
+        cin >> edge;
+
+    }
 }
 
 
