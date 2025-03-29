@@ -9,45 +9,57 @@ int main(int argc, char* argv []) {
     switch (argc) {
         /* Run program with default files straight away */
     case 1:
-        interface.defaultRun();
+        interface.defaultRun("", "", "", "");
         break;
 
         /* With the correct argument, the program will open in the interactive mode*/
-    case 2:
+    case 2: {
         if (std::string(argv[1]) == "-i") {
-            std::string outputFileName = "../output_interactive.txt";
-            std::ofstream outFile(outputFileName);
-            if (!outFile.is_open()) {
-            std::cout << "Error opening output file." << std::endl;
-            exit(1);
-        }
-            interface.presentUI("","", outFile);
-        }
-        else if (std::string(argv[1]) == "-h") {
+            interface.presentUI("", "", std::cout);
+        } else if (std::string(argv[1]) == "-h") {
             std::cout << "Usage: ./app -i" << std::endl;
             std::cout << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
             return 0;
-        }
-        else {
+        } else {
             std::cerr << "Invalid argument" << std::endl;
             std::cerr << "Usage: ./app -i" << std::endl;
             std::cerr << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
             return 1;
         }
         break;
+    }
         /* In this case the program will open straight to the interactive menu */
-    case 3:
+    case 3: {
+        std::string locatinsFileName = argv[1];
+        std::string distancesFileName = argv[2];
+
+
+        interface.presentUI(locatinsFileName, distancesFileName, std::cout);
         //interface.presentUI(argv[1], argv[2], cout);
-        //interface.presentUI("", "", outfile);
         break;
-        // In this case the program will skip to the output step as all arguments are present
-    case 4:
+    }
+    case 4:{
+        std::string locatinsFileName = argv[1];
+        std::string distancesFileName = argv[2];
+        std::string outputFileName = argv[3];
+
+        std::ofstream outFile(outputFileName);
+
+        interface.presentUI(locatinsFileName, distancesFileName, outFile);
         //interface.presentUI(argv[1], argv[2], outfile);
         break;
+    }
         // Same as case 4, but the default will be to output to a file, which should be the final argument
-    case 5:
+    case 5:{
+        std::string locatinsFileName = argv[1];
+        std::string distancesFileName = argv[2];
+        std::string inputFileName = argv[3];
+        std::string outputFileName = argv[4];
+
+        interface.defaultRun(locatinsFileName, distancesFileName, inputFileName, outputFileName);
         //defaultrun(argv[1], argv[2], infile, outfile);
         break;
+    }
         // Can either End the program right away with an error message
         // or send the error message and send the user to the interactive menu
     default:

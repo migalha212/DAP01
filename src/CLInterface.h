@@ -16,7 +16,7 @@ public:
      *
      * Responsible for calling other "Present" methods depending on user input
      */
-    void presentUI(const std::string& locations, const std::string& distances, std::ofstream& outFile);
+    void presentUI(const std::string& locations, const std::string& distances, std::ostream& outFile);
 
 
     /**
@@ -27,7 +27,7 @@ public:
      * such as initializing resources, processing data, and handling
      * the main logic of the application.
      */
-    void defaultRun();
+    void defaultRun(const std::string& locations, const std::string& distances, const std::string& inputFile, const std::string& outputFile);
 
 
     /**
@@ -68,9 +68,9 @@ public:
 private:
     /* Methods Meant for use in the interactive Menu */
 
-    void independantRoute(Graph<int>* g, std::ofstream& outFile);
-    void restrictedRoute(Graph<int>* g, std::ofstream& outFile);
-    void ecoFriendlyRoute(Graph<int>* g, std::ofstream& outFile);
+    void independantRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
+    void restrictedRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
+    void ecoFriendlyRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
 };
 
 #endif //CLMENU_H
