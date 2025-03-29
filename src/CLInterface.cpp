@@ -55,7 +55,7 @@ void CLInterface::presentUI(const string& locations, const string& distances, of
             restrictedRoute(&g, outFile);
             break;
         case 3:
-            //ecoFriendlyRoute(&g, outFile);
+            ecoFriendlyRoute(&g, outFile);
             break;
         default:
             return;
@@ -169,6 +169,81 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
     CLInterface::presentUI("", "", outFile); // return to the main menu
 }
 
+void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
+    system("cls");
+    cout << endl;
+    cout << "Eco-Friendly Route Planning" << endl;
+    cout << "Please enter the source node:" << endl;
+    string source;
+    cin >> source;
+    cout << "Please enter the destination node:" << endl;
+    string destination;
+    cin >> destination;
+    cout << "Please enter how many nodes to avoid:" << endl;
+    string avoidNodes;
+    cin >> avoidNodes;
+    int numNodes = parseInt(avoidNodes);
+    vector<Vertex<int>*> nAvoid;
+    for(int i = 0; i < numNodes; i++) {
+        cout << "Please enter the node to avoid:" << endl;
+        string node;
+        cin >> node;
+        Vertex<int>* v = parseVertex(node, g);
+        nAvoid.push_back(v);
+    }
+    cout << "Please enter how many edges to avoid:" << endl;
+    string avoidEdges;
+    cin >> avoidEdges;
+    int numEdges = parseInt(avoidEdges);
+    vector<Edge<int>*> eAvoid;
+    for(int i = 0; i < numEdges; i++) {
+        cout << "Please enter the edge to avoid in the format v1,v2 :" << endl;
+        string edge;
+        cin >> edge;
+        Edge<int>* e = parseEdge(edge, g);
+        eAvoid.push_back(e);
+    }
+    cout << "Please enter the maximum walking time:" << endl;
+    string maxWalkTimeStr;
+    cin >> maxWalkTimeStr;
+    double maxWalkTime = parseInt(maxWalkTimeStr);
+    cout << "Please enter if you want the approximate path (y/n):" << endl;
+    string aproxStr;
+    cin >> aproxStr;
+    bool aprox = false;
+    if (aproxStr == "y" || aproxStr == "Y") {
+        aprox = true;
+    }
+    else if (aproxStr == "n" || aproxStr == "N") {
+        aprox = false;
+    }
+    else {
+        cout << "Invalid input, defaulting to no approximate path." << endl;
+        aprox = false;
+    }
+    
+    int sNode = stoi(source);
+    int dNode = stoi(destination);
+    if (sNode == -1 || dNode == -1) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+    Vertex<int>* sNodePtr = g->findVertex(sNode);
+    Vertex<int>* dNodePtr = g->findVertex(dNode);
+    if (sNodePtr == nullptr || dNodePtr == nullptr) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+
+    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
+    cout << "Output written to output_interactive.txt" << endl;
+    cout << "Press any key to continue..." << endl;
+    cin.ignore(); // clear the newline character from the input buffer
+    cin.get(); // wait for user input
+    system("cls"); // clear screen
+    cout << endl;
+    CLInterface::presentUI("", "", outFile); // return to the main menu
+}
 
 void CLInterface::defaultRun() {
     Parsefile parser;
@@ -336,6 +411,9 @@ void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::v
             outFile << "WalkingRoute" << i << ":" << endl;
             outFile << "TotalTime" << i << ":" << endl;
         }
+
+        outFile << endl;
+
         return;
     }
 }
@@ -346,9 +424,4 @@ void CLInterface::outputPath(vector<int>& v, ofstream& out) {
         out << v[i] << ',';
     }
     out << v[v.size() - 1];
-}
-
-void outputEcoPath(vector<parkingNode>& v, ofstream& out, double& maxWalkTime) {
-    if (v.empty()) return;
-
 }
