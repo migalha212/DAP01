@@ -109,24 +109,40 @@ void CLInterface::restrictedRoute(Graph<int>* g, ofstream& outFile){
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
+    if(numNodes < 0){
+        cout << "Invalid number of nodes to avoid." << endl;
+        return;
+    }
     vector<Vertex<int>*> nAvoid;
     for(int i = 0; i < numNodes; i++) {
         cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
         Vertex<int>* v = parseVertex(node, g);
+        if (v == nullptr) {
+            cout << "Invalid node input." << endl;
+            return;
+        }
         nAvoid.push_back(v);
     }
     cout << "Please enter how many edges to avoid: ";
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
+    if(numEdges < 0){
+        cout << "Invalid number of edges to avoid." << endl;
+        return;
+    }
     vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
         cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
         cin >> edge;
         Edge<int>* e = parseEdge(edge, g);
+        if (e == nullptr) {
+            cout << "Invalid edge input." << endl;
+            return;
+        }
         eAvoid.push_back(e);
     }
     cout << "Please enter the node that must be included (enter 0 if not desired): ";
@@ -175,30 +191,50 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ofstream& outFile){
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
+    if(numNodes < 0){
+        cout << "Invalid number of nodes to avoid." << endl;
+        return;
+    }
     vector<Vertex<int>*> nAvoid;
     for(int i = 0; i < numNodes; i++) {
         cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
         Vertex<int>* v = parseVertex(node, g);
+        if( v == nullptr) {
+            cout << "Invalid node input." << endl;
+            return;
+        }
         nAvoid.push_back(v);
     }
     cout << "Please enter how many edges to avoid: ";
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
+    if(numEdges < 0){
+        cout << "Invalid number of edges to avoid." << endl;
+        return;
+    }
     vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
         cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
         cin >> edge;
         Edge<int>* e = parseEdge(edge, g);
+        if (e == nullptr) {
+            cout << "Invalid edge input." << endl;
+            return;
+        }
         eAvoid.push_back(e);
     }
     cout << "Please enter the maximum walking time: ";
     string maxWalkTimeStr;
     cin >> maxWalkTimeStr;
     double maxWalkTime = parseInt(maxWalkTimeStr);
+    if(maxWalkTime < 0){
+        cout << "Invalid maximum walking time." << endl;
+        return;
+    }
     cout << "Please enter if you want the approximate path (y/n): ";
     string aproxStr;
     cin >> aproxStr;
