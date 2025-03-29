@@ -41,7 +41,7 @@ public:
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
      */
-    void outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ofstream& outFile);
+    void outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ostream& outFile);
 
     /**
      * @brief Outputs the result of a restricted query operation to a file.
@@ -59,7 +59,7 @@ public:
      */
     void outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ostream& outFile);
 
-    void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ofstream& outFile);
+    void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ostream& outFile);
     /**
      *  temp method meant to aid in writing for now
      */
