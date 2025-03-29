@@ -1,6 +1,5 @@
 #include "CLInterface.h"
 #include "ShortestPathAlgorithms.cpp"
-#include "Parsefile.h"
 using namespace std;
 
 int parseInt(string& value) {
@@ -12,7 +11,7 @@ int parseInt(string& value) {
     }
 }
 
-void CLInterface::presentUI(const string& locations, const string& distances) {
+void CLInterface::presentUI(const string& locations, const string& distances, ofstream& outFile) {
     Graph<int> g;
     Parsefile parser;
     if (locations.empty() || distances.empty()) {
@@ -23,47 +22,86 @@ void CLInterface::presentUI(const string& locations, const string& distances) {
         parser.parseLocation(locations, &g);
         parser.parseDistance(distances, &g);
     }
+
+    
     while (true) {
+        
         system("cls"); // clears the terminal
         cout << endl;
         cout << "Choose Desired Mode:" << endl;
         cout << "1: Independent Planning" << endl;
         cout << "2: Restricted Planning" << endl;
         cout << "3: Eco-Friendly Planning" << endl;
+        cout << "Press q to exit" << endl;
         string choice;
         cin >> choice;
+        if(choice == "q"){
+            outFile.close(); 
+            exit(0);}
         int choiceInt = parseInt(choice);
         while (choiceInt == -1 || (choiceInt > 3 || choiceInt < 1)) {
             cout << "Invalid choice, please try again." << endl;
             cin >> choice;
             choiceInt = parseInt(choice);
         }
+        
         // TODO build logic for all 3 routes
         switch (choiceInt) {
         case 1:
-            independantRoute(&g);
+            independantRoute(&g, outFile);
             break;
         case 2:
-            //restrictedRoute(&g);
+            restrictedRoute(&g, outFile);
             break;
         case 3:
-            //ecoFriendlyRoute(&g);
+            //ecoFriendlyRoute(&g, outFile);
             break;
         default:
             return;
         }
-        cin >> choice; // only here so the program doesn't immediatly close
         return;
     }
 }
 
-void CLInterface::independantRoute(Graph<int>* g) {
+void CLInterface::independantRoute(Graph<int>* g, ofstream& outFile) {
     system("cls"); // clear screen
     cout << endl;
     cout << "Independent Route Planning" << endl;
     cout << "Please enter the source node:" << endl;
     string source;
+    cin >> source;
+    cout << "Please enter the destination node:" << endl;
+    string destination;
+    cin >> destination;
+    
+    
+    if (!outFile.is_open()) {
+        cout << "Error opening output file." << endl;
+        return;
+    }
+    int sNode = stoi(source);
+    int dNode = stoi(destination);
+    if (sNode == -1 || dNode == -1) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+    Vertex<int>* sNodePtr = g->findVertex(sNode);
+    Vertex<int>* dNodePtr = g->findVertex(dNode);
+    if (sNodePtr == nullptr || dNodePtr == nullptr) {
+        cout << "Invalid node input." << endl;
+        return;
+    }
+    outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
+    
+    cout << "Output written to output_interactive.txt" << endl;
+    cout << "Press any key to continue..." << endl;
+    cin.ignore(); // clear the newline character from the input buffer
+    cin.get(); // wait for user input
+    system("cls"); // clear screen
+    cout << endl;
+    CLInterface::presentUI("", "", outFile); // return to the main menu
 }
+
 
 void CLInterface::defaultRun() {
     Parsefile parser;

@@ -2,6 +2,7 @@
 #define CLMENU_H
 
 #include <iostream>
+#include <fstream>
 #include <Graph.h>
 #include "ParseFile.h"
 #include "ShortestPathAlgorithms.h"
@@ -15,7 +16,7 @@ public:
      *
      * Responsible for calling other "Present" methods depending on user input
      */
-    void presentUI(const std::string& locations, const std::string& distances);
+    void presentUI(const std::string& locations, const std::string& distances, std::ofstream& outFile);
 
 
     /**
@@ -67,9 +68,9 @@ public:
 private:
     /* Methods Meant for use in the interactive Menu */
 
-    void independantRoute(Graph<int>* g);
-    void restrictedRoute(Graph<int>* g);
-    void ecoFriendlyRoute(Graph<int>* g);
+    void independantRoute(Graph<int>* g, std::ofstream& outFile);
+    void restrictedRoute(Graph<int>* g, std::ofstream& outFile);
+    void ecoFriendlyRoute(Graph<int>* g, std::ofstream& outFile);
 };
 
 #endif //CLMENU_H

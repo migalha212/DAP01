@@ -15,3 +15,4 @@ build/
 
 # test files
 output.txt
+output_interactive.txt
