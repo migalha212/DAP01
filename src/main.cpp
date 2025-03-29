@@ -17,8 +17,11 @@ int main(int argc, char* argv []) {
         if (std::string(argv[1]) == "-i") {
             interface.presentUI("", "", std::cout);
         } else if (std::string(argv[1]) == "-h") {
-            std::cout << "Usage: ./app -i" << std::endl;
-            std::cout << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
+            std::cout << "Usage:" << std::endl;
+            std::cout << "./app -i - for interface with predefined files" << std::endl;
+            std::cout << "./app locations.csv distances.csv - for interface with custom files" << std::endl;
+            std::cout << "./app locations.csv distances.csv output.txt - for interface with custom files and output to file" << std::endl;
+            std::cout << "./app locations.csv distances.csv input.txt output.txt - for execution without interface of custom files, input file and output to file" << std::endl;
             return 0;
         } else {
             std::cerr << "Invalid argument" << std::endl;
@@ -57,6 +60,7 @@ int main(int argc, char* argv []) {
         std::string outputFileName = argv[4];
 
         interface.defaultRun(locatinsFileName, distancesFileName, inputFileName, outputFileName);
+        std::cout << "Result written to " << outputFileName << std::endl;
         //defaultrun(argv[1], argv[2], infile, outfile);
         break;
     }
