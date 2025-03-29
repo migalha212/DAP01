@@ -14,7 +14,7 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid);
 void printParseError(ofstream& out, string& value, const string& actual);
 void printLineError(ofstream& out, string line);
 
-int Parsefile::parseLocation(std::string& filename, Graph<int>* graph) {
+int Parsefile::parseLocation(const std::string& filename, Graph<int>* graph) {
     fstream file(filename);
     string line;
     getline(file, line); // first line is ignored, header
@@ -36,7 +36,7 @@ int Parsefile::parseLocation(std::string& filename, Graph<int>* graph) {
     return 0;
 }
 
-int Parsefile::parseDistance(std::string& filename, Graph<int>* graph) {
+int Parsefile::parseDistance(const std::string& filename, Graph<int>* graph) {
     fstream file(filename);
     string line;
     getline(file, line); // first line is ignored, header
@@ -128,15 +128,15 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
 
 /**
  * @brief Parses input from a file to execute queries on a graph and writes the results to an output file.
- * 
+ *
  * This function reads a structured input file containing queries and their parameters, processes the queries,
  * and writes the results to an output file. It supports two modes of operation: "driving" and "driving-walking".
- * 
+ *
  * @param inputFileName The name of the input file containing the queries.
  * @param outputFileName The name of the output file where results will be written.
  * @param g A pointer to the graph object on which the queries will be executed.
  * @return int Returns 0 on successful execution, or 1 if an error occurs while opening the input file.
- * 
+ *
  * @details
  * The input file should follow a specific format:
  * - Each query starts with a line beginning with `#` followed by the query name.
@@ -153,21 +153,21 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
  *     - `IncludeNode:<id>/<code>`: Specifies a node that must be included in the path.
  *   - For "driving-walking" mode, an optional parameter:
  *     - `Aproximate`: Indicates whether to use approximate results.
- * 
+ *
  * The function validates the input format and parameters. If an error occurs during parsing, it writes an
  * appropriate error message to the output file and skips to the next query.
- * 
+ *
  * The function supports the following operations:
  * - For "driving" mode:
  *   - Outputs results for restricted paths considering avoid nodes, avoid edges, and must-include nodes.
  * - For "driving-walking" mode:
  *   - Outputs results for eco-friendly paths considering avoid nodes, avoid edges, maximum walking time,
  *     and optional approximation.
- * 
+ *
  * @note The function assumes that the input file is well-formed and adheres to the specified format.
  *       Any deviation from the format will result in error messages being written to the output file.
  */
-int Parsefile::parseInput(std::string& inputFileName, std::string& outputFileName, Graph<int>* g) {
+int Parsefile::parseInput(const std::string& inputFileName,const std::string& outputFileName, Graph<int>* g) {
     fstream input(inputFileName);
     ofstream output(outputFileName);
     string line;
@@ -405,7 +405,7 @@ int Parsefile::parseInput(std::string& inputFileName, std::string& outputFileNam
                 else
                     aproximate = true;
             interface.outPutEcoResult(source, destination, nAvoid, eAvoid, maxWalkingTime, aproximate, g, output);
-            if(line.empty()) output << endl;
+            if (line.empty()) output << endl;
             break;
         }
     }
