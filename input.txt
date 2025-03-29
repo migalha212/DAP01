@@ -1,18 +1,80 @@
-# 1
+# test1
 Mode:driving
-Source:2
-Destination:7
+Source:3
+Destination:8
+
+# test2
+Mode:driving
+Source:8
+Destination:1
+
+# test3
+Mode:driving
+Source:5
+Destination:4
+AvoidNodes:2
+AvoidSegments:
+IncludeNode:
+
+# test4
+Mode:driving
+Source:5
+Destination:4
+AvoidNodes:
+AvoidSegments:(3,2),(7,8)
+IncludeNode:
+
+# test5
+Mode:driving
+Source:5
+Destination:4
+AvoidNodes:2
+AvoidSegments:(4,7)
+IncludeNode:
+
+# test6
+Mode:driving
+Source:5
+Destination:4
+AvoidNodes:
+AvoidSegments:
+IncludeNode:7
+
+# test7
+Mode:driving-walking
+Source:8
+Destination:5
+MaxWalkTime:18
+AvoidNodes:
+AvoidSegments:
+
+# test8
+Mode:driving-walking
+Source:8
+Destination:5
+MaxWalkTime:5
+AvoidNodes:
+AvoidSegments:
+
+# test8-aprox
+Mode:driving-walking
+Source:8
+Destination:5
+MaxWalkTime:5
+AvoidNodes:
+AvoidSegments:
+Aproximate
 
 # 8
 Mode:driving
 Source:2
-Destination:4
+Destination:1000
 AvoidNodes:
 AvoidSegments:
 IncludeNode:3
 
 # 2
-Mode:driving
+Mode:drivin
 Source:2
 Destination:4
 
@@ -21,20 +83,13 @@ Mode:driving
 Source:papaia
 Destination:banana
 
+# 4
+Mode:driving-walking
+Source:2
+Destination:4
 
 # 5
-Mode:driving-walking
-Source:8
-Destination:5
-MaxWalkTime:18
+Mode:driving
+Source:2
+Destination:4
 AvoidNodes:
-AvoidSegments:
-
-# 6
-Mode:driving-walking
-Source:8
-Destination:5
-MaxWalkTime:5
-AvoidNodes:
-AvoidSegments:
-

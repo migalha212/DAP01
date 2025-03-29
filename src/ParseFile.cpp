@@ -135,13 +135,12 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         return 1;
     }
 
-    bool err = false, inQuery = false;
+    bool err = false;
 
     while (getline(input, line)) {
         //* Ignore all empty lines between tests, reset state of error from previous test if needed
         if (line.empty()) {
             err = false;
-            inQuery = false;
             nAvoid.clear();
             eAvoid.clear();
             must = nullptr;
@@ -150,10 +149,9 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         }
 
         //* First look for Query name, queries should begin with a # and are marked as finished by an empty line
-        string queryName;
-        if (!inQuery && !err) {
+        if (!err) {
             if (line[0] == '#') {
-                queryName = line;
+                output << line << endl;
             }
             else {
                 err = true;
@@ -185,7 +183,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
                 else if (value == "driving-walking") mode = Mode::drivingwalking;
                 else {
                     err = true;
-                    printParseError(output, value, "Mode:<driving>/<driving - walking>");
+                    printParseError(output, value, "Mode:<driving>/<driving-walking>");
                     continue;
                 }
             }
@@ -245,14 +243,13 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
             if (line.empty()) {
                 //* upon finding an emptyline with the driving mode we can end the query here
                 if (mode == Mode::driving) {
-                    inQuery = false;
-                    interface.outPutIndependentResult(queryName, source, destination, g, output);
+                    interface.outPutIndependentResult(source, destination, g, output);
                     continue;
                 }
                 //* if not then there is an error, because the formating for the mode was not completed
                 else {
-                    err = true;
                     output << "Unexpected Empty line found, Missing multiple Arguments" << endl;
+                    output << endl;
                     continue;
                 }
             }
@@ -327,7 +324,7 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
 
         //* Look for Node include, first half of string should be exactly IncludeNode
 
-        if(mode == Mode::driving) {
+        if (mode == Mode::driving) {
             getline(input, line);
             if (!parseArgument(line, argument, value)) {
                 err = true;
@@ -355,18 +352,27 @@ int Parsefile::parseInput(std::string inputFileName, std::string outputFileName,
         //* Final Step is to call the according algorithm
         switch (mode) {
         case Mode::driving:
-            interface.outPutRestrictedResult(queryName, source, destination, nAvoid, eAvoid, must, g, output);
-            inQuery = false;
+            interface.outPutRestrictedResult(source, destination, nAvoid, eAvoid, must, g, output);
             break;
 
         case Mode::drivingwalking:
-            interface.outPutEcoResult(queryName, source, destination, nAvoid, eAvoid, maxWalkingTime, g, output);
-            inQuery = false;
+
+            getline(input, line);
+            bool aproximate = false;
+            if (!line.empty())
+                if (line != "Aproximate") {
+                    err = true;
+                    printParseError(output, argument, "Aproximate");
+                    continue;
+                }
+                else
+                    aproximate = true;
+            interface.outPutEcoResult(source, destination, nAvoid, eAvoid, maxWalkingTime, aproximate, g, output);
+            if(line.empty()) output << endl;
             break;
         }
     }
 
-    if (inQuery) output << endl << "unexpected EOF before a Query was over" << endl;
     output.close();
     input.close();
     return 0;
