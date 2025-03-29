@@ -15,12 +15,8 @@ public:
      *
      * Responsible for calling other "Present" methods depending on user input
      */
-    void presentUI();
+    void presentUI(const std::string& locations, const std::string& distances);
 
-    /**
-     *
-     */
-    void presentInteractiveMenu();
 
     /**
      * @brief Executes the default run sequence for the application.
@@ -39,13 +35,12 @@ public:
      * This function processes the query result and writes it to the specified output file.
      * It takes the query name, source and destination nodes, the graph, and the output file stream as input.
      *
-     * @param queryName A reference to the name of the query being processed.
      * @param sNode A pointer to the source node involved in the query.
      * @param dNode A pointer to the destination node involved in the query.
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
      */
-    void outPutIndependentResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ofstream& outFile);
+    void outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ofstream& outFile);
 
     /**
      * @brief Outputs the result of a restricted query operation to a file.
@@ -53,7 +48,6 @@ public:
      * This function processes the query result and writes it to the specified output file.
      * It takes the query name, source and destination nodes, the graph, and the output file stream as input.
      *
-     * @param queryName A reference to the name of the query being processed.
      * @param sNode A pointer to the source node involved in the query.
      * @param dNode A pointer to the destination node involved in the query.
      * @param nAvoid A vector of pointers to nodes that should be avoided in the path.
@@ -62,9 +56,9 @@ public:
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
      */
-    void outPutRestrictedResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile);
+    void outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile);
 
-    void outPutEcoResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, const double& maxWalkTime, Graph<int>* g, std::ofstream& outFile);
+    void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ofstream& outFile);
     /**
      *  temp method meant to aid in writing for now
      */
@@ -73,9 +67,9 @@ public:
 private:
     /* Methods Meant for use in the interactive Menu */
 
-    void independantRoute(int sID, int dID, Graph<int>* g);
-    void restrictedRoute(int sID, int dID, Graph<int>* g);
-    void ecoFriendlyRoute(int sID, int dID, Graph<int>* g);
+    void independantRoute(Graph<int>* g);
+    void restrictedRoute(Graph<int>* g);
+    void ecoFriendlyRoute(Graph<int>* g);
 };
 
 #endif //CLMENU_H

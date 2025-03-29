@@ -1,39 +1,53 @@
 #include "CLInterface.h"
 #include "ShortestPathAlgorithms.cpp"
+#include "Parsefile.h"
 using namespace std;
 
-void CLInterface::presentUI() {
+int parseInt(string& value) {
+    try {
+        return stoi(value);
+    }
+    catch (invalid_argument) {
+        return -1;
+    }
+}
+
+void CLInterface::presentUI(const string& locations, const string& distances) {
     Graph<int> g;
     Parsefile parser;
-    parser.parseLocation("../small_data/Locations.csv", &g);
-    parser.parseDistance("../small_data/Distances.csv", &g);
+    if (locations.empty() || distances.empty()) {
+        parser.parseLocation("../small_data/Locations.csv", &g);
+        parser.parseDistance("../small_data/Distances.csv", &g);
+    }
+    else {
+        parser.parseLocation(locations, &g);
+        parser.parseDistance(distances, &g);
+    }
     while (true) {
         system("cls"); // clears the terminal
         cout << endl;
         cout << "Choose Desired Mode:" << endl;
         cout << "1: Independent Planning" << endl;
-        cout << "2: Restricted Planning" << endl; //* this functionality is never metioned in the guide, not a priority
+        cout << "2: Restricted Planning" << endl;
         cout << "3: Eco-Friendly Planning" << endl;
-        int choice;
+        string choice;
         cin >> choice;
-        while (choice < 1 || choice > 3) {
-            cout << "Choose a valid option" << endl;
+        int choiceInt = parseInt(choice);
+        while (choiceInt == -1 || (choiceInt > 3 || choiceInt < 1)) {
+            cout << "Invalid choice, please try again." << endl;
             cin >> choice;
+            choiceInt = parseInt(choice);
         }
-
-        int sID, dID; // Source ID and Destination ID
-        cout << endl << "Input the Starting Location ID followed by Destination ID" << endl;
-        cin >> sID >> dID;
-
-        switch (choice) {
+        // TODO build logic for all 3 routes
+        switch (choiceInt) {
         case 1:
-            independantRoute(sID, dID, &g);
+            independantRoute(&g);
             break;
         case 2:
-            //restrictedRoute(sID, dID, &g);
+            //restrictedRoute(&g);
             break;
         case 3:
-            //ecoFriendlyRoute(sID, dID, &g);
+            //ecoFriendlyRoute(&g);
             break;
         default:
             return;
@@ -41,6 +55,14 @@ void CLInterface::presentUI() {
         cin >> choice; // only here so the program doesn't immediatly close
         return;
     }
+}
+
+void CLInterface::independantRoute(Graph<int>* g) {
+    system("cls"); // clear screen
+    cout << endl;
+    cout << "Independent Route Planning" << endl;
+    cout << "Please enter the source node:" << endl;
+    string source;
 }
 
 void CLInterface::defaultRun() {
@@ -54,18 +76,17 @@ void CLInterface::defaultRun() {
     parser.parseInput("../input.txt", "../output.txt", &g);
 }
 
-void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ofstream& outFile) {
-    outFile << queryName << endl;
+void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ofstream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
 
     //* A first drivingDijsktra's is called for the first shortest path
     resetGraph(g);
-    drivingDijkstra(g, sNode);
+    dijkstra(g, sNode, Distance::drive);
 
     vector<int> v;
-    double dist = getPath(g, sNode, dNode, v);
+    double dist = getPath(g, sNode, dNode, v, true);
     outFile << "BestDrivingRoute:";
     if (dist != -1) {
         outputPath(v, outFile);
@@ -75,8 +96,8 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
         outFile << "none" << endl;
     }
 
-    drivingDijkstra(g, sNode);
-    dist = getPath(g, sNode, dNode, v);
+    dijkstra(g, sNode, Distance::drive);
+    dist = getPath(g, sNode, dNode, v, true);
     outFile << "AlternativeDrivingRoute:";
     if (dist != -1) {
         outputPath(v, outFile);
@@ -89,8 +110,7 @@ void CLInterface::outPutIndependentResult(std::string& queryName, Vertex<int>* s
     outFile << endl;
 }
 
-void CLInterface::outPutRestrictedResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*> nAvoid, vector<Edge<int>*> eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile) {
-    outFile << queryName << endl;
+void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -117,9 +137,13 @@ struct parkingNode
     double dist;
     vector<int> path;
 };
+bool parkingSort(const parkingNode& a, const parkingNode& b) {
+    if (a.node->getDist() + a.dist < b.node->getDist() + b.dist) return true;
+    else if (a.node->getDist() + a.dist == b.node->getDist() + b.dist) return a.dist > b.dist;
+    return false;
+}
 
-void CLInterface::outPutEcoResult(std::string& queryName, Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*> nAvoid, std::vector<Edge<int>*> eAvoid, const double& maxWalkTime, Graph<int>* g, std::ofstream& outFile) {
-    outFile << queryName << endl;
+void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ofstream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -130,63 +154,94 @@ void CLInterface::outPutEcoResult(std::string& queryName, Vertex<int>* sNode, Ve
 
     //* First dijkstra's from the destination node to each of the parking nodes
     dijkstra(g, dNode, Distance::walk);
-    // TODO: check if the distance is less than maxWalkTime and save all paths that do so, if not return none
     vector<parkingNode> parkingNodes;
     for (auto v : g->getVertexSet()) {
-        if (v->getParking() == 1 && v->getDist() <= maxWalkTime) {
+        if (v->getParking() == 1) {
             parkingNode pNode;
             pNode.node = v;
             pNode.dist = v->getDist();
-            double dist = getPath(g, dNode, v, pNode.path);
+            double dist = getPath(g, dNode, v, pNode.path, false);
             if (dist != -1) {
                 parkingNodes.push_back(pNode);
             }
         }
     }
 
-    if(parkingNodes.empty()) {
-        outFile << "Message: no possible route with max. walking time of " << maxWalkTime << " minutes." << endl;
-        return;
-    }
 
     resetGraph(g);
     prepareRestrictedGraph(nAvoid, eAvoid);
-
     //* Then dijkstra's from the source node to each of the parking nodes
     dijkstra(g, sNode, Distance::drive);
+    //* After this one happens: dist holds the walkTime, pNode.node.getDist() holds the drive time
+    //* The Nodes should be sorted using this info
+    sort(parkingNodes.begin(), parkingNodes.end(), parkingSort);
     // Todo: complete the paths that meet the requirement and present the best
     for (auto& pNode : parkingNodes) {
-        outFile << "Walking Route:";
+        if (pNode.dist > maxWalkTime) continue;
+        vector<int> drive;
+        if (pNode.dist == INF) continue; // no path to parking node
+        double dist = getPath(g, sNode, pNode.node, drive, true);
+        if (dist == -1) continue;
+        outFile << "DrivingRoute:";
+        outputPath(drive, outFile);
+        outFile << '(' << pNode.node->getDist() << ')' << endl;
+
+        outFile << "ParkingNode:" << pNode.node->getInfo() << endl;
+        outFile << "WalkingRoute:";
         outputPath(pNode.path, outFile);
         outFile << '(' << pNode.dist << ')' << endl;
-        pNode.path.clear();
-        pNode.dist += pNode.node->getDist();
-        if (pNode.dist == INF) continue; // no path to parking node
-        double dist = getPath(g, sNode, pNode.node, pNode.path);
-        if (dist != -1) {
-            outFile << "Driving Route:";
-            outputPath(pNode.path, outFile);
+        outFile << "TotalTime:" << pNode.dist + pNode.node->getDist() << endl;
+        drive.clear();
+        return;
+    }
+    if (!aprox) {
+        //* if method gets to this point it means no paths were printed so we can check if the user wants the aproximate path
+        outFile << "DrivingRoute:" << endl;
+        outFile << "ParkingNode:" << endl;
+        outFile << "TotalTime:" << endl;
+        outFile << "Message: no possible route with max. walking time of " << maxWalkTime << " minutes." << endl;
+        return;
+    }
+    else {
+        int i = 0;
+        for (auto& pNode : parkingNodes) {
+            i++;
+            vector<int> drive;
+            if (pNode.dist == INF) continue; // no path to parking node
+            double dist = getPath(g, sNode, pNode.node, drive, true);
+            if (dist == -1) continue;
+
+            outFile << "DrivingRoute" << i << ":";
+            outputPath(drive, outFile);
             outFile << '(' << pNode.node->getDist() << ')' << endl;
-            outFile << "TotalDistance:" << pNode.dist << endl;
+            outFile << "ParkingNode" << i << ":" << pNode.node->getInfo() << endl;
+            outFile << "WalkingRoute" << i << ":";
+            outputPath(pNode.path, outFile);
+            outFile << '(' << pNode.dist << ')' << endl;
+            outFile << "TotalTime" << i << ":" << pNode.dist + pNode.node->getDist() << endl;
+            drive.clear();
+            if (i == 2) break;
         }
+        while (i < 2) {
+            i++;
+            outFile << "DrivingRoute" << i << ":" << endl;
+            outFile << "ParkingNode" << i << ":" << endl;
+            outFile << "WalkingRoute" << i << ":" << endl;
+            outFile << "TotalTime" << i << ":" << endl;
+        }
+        return;
     }
 }
 
-
 void CLInterface::outputPath(vector<int>& v, ofstream& out) {
-    if (v.empty()) return; //TODO
+    if (v.empty()) return;
     for (int i = 0; i < v.size() - 1; i++) {
         out << v[i] << ',';
     }
     out << v[v.size() - 1];
 }
 
-void CLInterface::independantRoute(int sID, int dID, Graph<int>* g) {
-    system("cls"); // clear screen
-    cout << endl;
-    cout << "Source:" << sID << endl;
-    cout << "Destination:" << dID << endl;
-    Vertex<int>* sNode = g->findVertex(sID);
-    drivingDijkstra(g, sNode);
-    cout << "BestDrivingRoute:";
+void outputEcoPath(vector<parkingNode>& v, ofstream& out, double& maxWalkTime) {
+    if (v.empty()) return;
+
 }

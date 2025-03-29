@@ -5,6 +5,7 @@ using namespace std;
 
 extern Vertex<int>* must;
 
+
 template <class T>
 bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
     if (edge->getOrig()->getDist() + edge->getDriveTime() < edge->getDest()->getDist()) { // we have found a better way to reach v
@@ -16,7 +17,7 @@ bool relax(Edge<T>* edge) { // d[u] + w(u,v) < d[v]
 }
 
 template <class T>
-bool walkingRelax(Edge<T>* edge){
+bool walkingRelax(Edge<T>* edge) {
     if (edge->getOrig()->getDist() + edge->getWalkTime() < edge->getDest()->getDist()) { // we have found a better way to reach v
         edge->getDest()->setDist(edge->getOrig()->getDist() + edge->getWalkTime()); // d[v] = d[u] + w(u,v)
         edge->getDest()->setPath(edge); // set the predecessor of v to u; in this case the edge from u to v
@@ -26,7 +27,7 @@ bool walkingRelax(Edge<T>* edge){
 }
 
 template <class T>
-void drivingDijkstra(Graph<T>* g, Vertex<T>* origin) {
+static void dijkstra(Graph<T>* g, Vertex<T>* origin, Distance d) {
     // Initialize the vertices
     for (auto v : g->getVertexSet()) {
         v->setDist(INF);
@@ -39,17 +40,31 @@ void drivingDijkstra(Graph<T>* g, Vertex<T>* origin) {
     q.insert(s);
     while (!q.empty()) {
         auto v = q.extractMin();
-        if (v->isVisited()) continue;
+        if (v->isVisited()) continue; // Ignore vertices that are marked as visited
         for (auto e : v->getAdj()) {
-            if (e->isSelected()) continue;
+            if (e->isSelected()) continue; // Ignore edges that are marked as selected
             auto oldDist = e->getDest()->getDist();
-            if (relax(e)) {
-                if (oldDist == INF) {
-                    q.insert(e->getDest());
+            switch (d) {
+            case Distance::drive:
+                if (relax(e)) {
+                    if (oldDist == INF) {
+                        q.insert(e->getDest());
+                    }
+                    else {
+                        q.decreaseKey(e->getDest());
+                    }
                 }
-                else {
-                    q.decreaseKey(e->getDest());
+                break;
+            case Distance::walk:
+                if (walkingRelax(e)) {
+                    if (oldDist == INF) {
+                        q.insert(e->getDest());
+                    }
+                    else {
+                        q.decreaseKey(e->getDest());
+                    }
                 }
+                break;
             }
         }
     }
@@ -60,15 +75,15 @@ void restrictedDrivingDijkstra(Graph<T>* g, Vertex<T>* origin, vector<Vertex<T>*
     resetGraph(g);
     prepareRestrictedGraph(nAvoid, eAvoid);
     if (must) {
-        drivingDijkstra(g, must);
+        dijkstra(g, must, Distance::drive);
     }
     else {
-        drivingDijkstra(g, origin);
+        dijkstra(g, origin, Distance::drive);
     }
 }
 
 template <class T>
-static double getPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, std::vector<T>& res) {
+static double getPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, std::vector<T>& res, const bool& rev) {
     res.clear();
     auto v = dest;
     double dist = v->getDist();
@@ -83,12 +98,16 @@ static double getPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, std::vect
         v->setVisited(true);
         res.push_back(v->getInfo());
     }
-    v->setVisited(false);
-    reverse(res.begin(), res.end());
-    if (res.empty() || res[0] != origin->getInfo()) {
+    int s = res.size() - 1;
+    if (rev){
+        reverse(res.begin(), res.end());
+        s = 0;
+    }
+    if (res.empty() || res[s] != origin->getInfo()) {
         std::cout << "No Path Found!!" << std::endl;
         return -1;
     }
+    v->setVisited(false);
     return dist;
 }
 
@@ -160,8 +179,8 @@ static double getRestrictedPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest,
 
         std::vector<T> res1, res2;
 
-        double dist1 = getPath(g, must, origin, res1);
-        double dist2 = getPath(g, must, dest, res2);
+        double dist1 = getPath(g, must, origin, res1, true);
+        double dist2 = getPath(g, must, dest, res2, true);
 
         if (dist1 == -1 || dist2 == -1) return -1;
 
@@ -175,7 +194,7 @@ static double getRestrictedPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest,
         return dist1 + dist2;
     }
 
-    return getPath(g, origin, dest, res);
+    return getPath(g, origin, dest, res, true);
 }
 
 template <class T>
@@ -202,51 +221,4 @@ static void prepareRestrictedGraph(vector<Vertex<T>*> nA, vector<Edge<T>*> nE) {
     }
 }
 
-enum Distance {
-    walk,
-    drive,
-};
 
-template <class T>
-static void dijkstra(Graph<T>* g, Vertex<T>* origin, Distance d) {
-    // Initialize the vertices
-    for (auto v : g->getVertexSet()) {
-        v->setDist(INF);
-        v->setPath(nullptr);
-    }
-    auto s = origin;
-    s->setDist(0);
-
-    MutablePriorityQueue<Vertex<T>> q;
-    q.insert(s);
-    while (!q.empty()) {
-        auto v = q.extractMin();
-        if (v->isVisited()) continue; // Ignore vertices that are marked as visited
-        for (auto e : v->getAdj()) {
-            if (e->isSelected()) continue; // Ignore edges that are marked as selected
-            auto oldDist = e->getDest()->getDist();
-            switch (d) {
-                case Distance::drive:
-                    if (relax(e)) {
-                        if (oldDist == INF) {
-                            q.insert(e->getDest());
-                        }
-                        else {
-                            q.decreaseKey(e->getDest());
-                        }
-                    }
-                    break;
-                case Distance::walk:
-                    if (walkingRelax(e)) {
-                        if (oldDist == INF) {
-                            q.insert(e->getDest());
-                        }
-                        else {
-                            q.decreaseKey(e->getDest());
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-}

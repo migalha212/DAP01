@@ -14,16 +14,24 @@ int main(int argc, char* argv []) {
 
         /* With the correct argument, the program will open in the interactive mode*/
     case 2:
-        interface.presentUI();
-        if (argv[1] == "-i") {
-            std::cout << "interactive" << std::endl;
+        if (std::string(argv[1]) == "-i") {
+            interface.presentUI("","");
+        }
+        else if (std::string(argv[1]) == "-h") {
+            std::cout << "Usage: ./app -i" << std::endl;
+            std::cout << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
+            return 0;
         }
         else {
-            //! error, but run with default files
+            std::cerr << "Invalid argument" << std::endl;
+            std::cerr << "Usage: ./app -i" << std::endl;
+            std::cerr << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
+            return 1;
         }
         break;
         /* In this case the program will open straight to the interactive menu */
     case 3:
+        interface.presentUI(argv[1], argv[2]);
         break;
         // In this case the program will skip to the output step as all arguments are present
     case 4:
@@ -34,10 +42,13 @@ int main(int argc, char* argv []) {
         // Can either End the program right away with an error message
         // or send the error message and send the user to the interactive menu
     default:
-        //interface.printArgumentError();
+        std::cerr << "Invalid argument" << std::endl;
+        std::cerr << "Usage: ./app -i" << std::endl;
+        std::cerr << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
         return 1;
     }
-
-
     return 0;
 }
+
+
+
