@@ -12,7 +12,11 @@
 class Parsefile
 {
 public:
-
+    enum Mode
+    {
+        driving,
+        drivingwalking,
+    };
     /**
      * @brief Parses a file to extract location data and populates the given graph.
      * 
@@ -27,7 +31,7 @@ public:
      * @return An integer indicating the success or failure of the operation.
      *         0 indicates success, while non-zero values indicate errors.
      */
-    int parseLocation(std::string filename, Graph<int>* g);
+    int parseLocation(std::string& filename, Graph<int>* g);
 
     /**
      * @brief Parses a file to extract distance data and populates the given graph.
@@ -42,10 +46,25 @@ public:
      * @return An integer indicating the success or failure of the parsing operation.
      *         0 for success and a non-zero value for failure.
      */
-    int parseDistance(std::string filename, Graph<int>* g);
+    int parseDistance(std::string& filename, Graph<int>* g);
 
 
-    int parseInput(std::string inputFileName, std::string outputFileName, Graph<int>* g);
+    int parseInput(std::string& inputFileName, std::string& outputFileName, Graph<int>* g);
 
 };
+/* Auxiliary Methods */
+
+/**
+ * @brief Parses a string value to retrieve a vertex in the graph.
+ * 
+ * This function takes a string representation of a vertex id or code, searches for
+ * the corresponding vertex in the provided graph, and retrieves the
+ * existing vertex if it exists. If the vertex does not exist, nullpointer is returned.
+ * 
+ * @param value A reference to the string containing the vertex id or code to parse.
+ * @param g A pointer to the graph where the vertex will be searched.
+ * @return A pointer to the vertex corresponding to the parsed value or nullpointer if nonexistant.
+ */
+Vertex<int>* parseVertex(string& value, Graph<int>* g);
+
 #endif //PARSE_FILE_H
