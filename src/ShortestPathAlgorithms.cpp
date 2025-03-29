@@ -111,61 +111,6 @@ static double getPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, std::vect
     return dist;
 }
 
-
-/*template <class T>
-static double getRestrictedPath(Graph<T>* g, const int& origin, const int& dest, const Vertex<T>* must, std::vector<T>& res) {
-    res.clear();
-    auto v = g->findVertex(dest);
-    double dist = v->getDist();
-    if (v == nullptr || v->getDist() == INF) { // missing or disconnected
-        return -1;
-    }
-    if (must != nullptr)
-    {
-        v = g->findVertex(origin);
-        res.push_back(v->getInfo());
-        dist += v->getDist();
-        while (v->getPath() != nullptr) {
-            v->getPath()->setSelected(true);
-            v->getPath()->getReverse()->setSelected(true);
-            v = v->getPath()->getOrig();
-            v->setVisited(true);
-            res.push_back(v->getInfo());
-            if (must == v)
-            {
-                break;
-            }
-
-        }
-
-        v->setVisited(false);
-
-        v = g->findVertex(dest);
-        res.push_back(v->getInfo());
-        while (v->getPath()->getOrig() != must) {
-            v->getPath()->setSelected(true);
-            v->getPath()->getReverse()->setSelected(true);
-            v = v->getPath()->getOrig();
-            v->setVisited(true);
-            res.push_back(v->getInfo());
-        }
-
-        v->setVisited(false);
-
-        if (res.empty() || res[0] != origin) {
-            std::cout << "No Path Found!!" << std::endl;
-            return -1;
-        }
-        return dist;
-    }
-
-    else
-    {
-        return getPath(g, origin, dest, res);
-    }
-
-}*/
-
 template <class T>
 static double getRestrictedPath(Graph<T>* g, Vertex<T>* origin, Vertex<T>* dest, Vertex<T>* must, std::vector<T>& res) {
     res.clear();
