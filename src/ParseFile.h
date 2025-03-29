@@ -117,4 +117,6 @@ Vertex<int>* parseVertex(std::string& value, Graph<int>* g);
         */
 Edge<int>* parseEdge(std::string& value, Graph<int>* g);
 
+int parseInt(std::string& value);
+
 #endif //PARSE_FILE_H

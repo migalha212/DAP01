@@ -57,13 +57,13 @@ public:
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
      */
-    void outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ofstream& outFile);
+    void outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ostream& outFile);
 
     void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ofstream& outFile);
     /**
      *  temp method meant to aid in writing for now
      */
-    void outputPath(std::vector<int>& v, std::ofstream& out);
+    void outputPath(std::vector<int>& v, std::ostream& out);
 
 private:
     /* Methods Meant for use in the interactive Menu */
