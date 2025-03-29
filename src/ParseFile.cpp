@@ -71,6 +71,26 @@ Vertex<int>* parseVertex(string& value, Graph<int>* g) {
     }
 }
 
+Edge<int>* parseEdge(string& value, Graph<int>* g) {
+    istringstream ss(value);
+    string id1, id2;
+    Vertex<int>* v1, * v2;
+    Edge<int>* e = nullptr;
+    getline(ss, id1, ',');
+    getline(ss, id2);
+    v1 = parseVertex(id1, g);
+    v2 = parseVertex(id2, g);
+    if (v1 == nullptr || v2 == nullptr) return nullptr;
+    for (Edge<int>* s : v1->getAdj()) {
+        if (s->getDest() == v2) {
+            e = s;
+            break;
+        }
+    }
+    return e;
+}
+
+
 bool parseArgument(string& line, string& argument, string& value) {
     if (count(line.begin(), line.end(), ':') != 1) return false;
     stringstream ss(line);

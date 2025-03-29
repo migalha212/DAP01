@@ -96,12 +96,25 @@ public:
      *
      * This function takes a string representation of a vertex id or code, searches for
      * the corresponding vertex in the provided graph, and retrieves the
-     * existing vertex if it exists. If the vertex does not exist, nullpointer is returned.
+     * vertex if it exists. If the vertex does not exist, nullpointer is returned.
      *
      * @param value A reference to the string containing the vertex id or code to parse.
      * @param g A pointer to the graph where the vertex will be searched.
      * @return A pointer to the vertex corresponding to the parsed value or nullpointer if nonexistant.
     */
-Vertex<int>* parseVertex(string& value, Graph<int>* g);
+Vertex<int>* parseVertex(std::string& value, Graph<int>* g);
+    
+        /**
+        * @brief Parses a string value to retrieve an edge from the graph.
+        *
+        * This function takes a string representation of 2 vertex ids or codes separated by a comma(','), searches for
+        * the corresponding vertexs in the provided graph, and retrieves the
+        * edge if it exists. If the edge does not exist, nullpointer is returned.
+        *
+        * @param value A reference to the string containing 2 vertex ids or codes separated by a comma(',') to parse.
+        * @param g A pointer to the graph where the edge will be searched.
+        * @return A pointer to the edge corresponding to the parsed values or nullpointer if nonexistant.
+        */
+Edge<int>* parseEdge(std::string& value, Graph<int>* g);
 
 #endif //PARSE_FILE_H
