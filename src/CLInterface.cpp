@@ -18,7 +18,7 @@ void CLInterface::presentUI(const string& locations, const string& distances, os
 
 
     while (true) {
-        
+
         system("cls"); // clears the terminal
         cout << endl;
         cout << "Choose Desired Mode:" << endl;
@@ -28,16 +28,17 @@ void CLInterface::presentUI(const string& locations, const string& distances, os
         cout << "Press q to exit" << endl;
         string choice;
         cin >> choice;
-        if(choice == "q"){
+        if (choice == "q") {
             //outFile.close(); 
-            exit(0);}
+            exit(0);
+        }
         int choiceInt = parseInt(choice);
         while (choiceInt == -1 || (choiceInt > 3 || choiceInt < 1)) {
             cout << "Invalid choice, please try again." << endl;
             cin >> choice;
             choiceInt = parseInt(choice);
         }
-        
+
         // TODO build logic for all 3 routes
         switch (choiceInt) {
         case 1:
@@ -66,7 +67,7 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     cout << "Please enter the destination node: ";
     string destination;
     cin >> destination;
-    
+
     Vertex<int>* sNodePtr = parseVertex(source, g);
     Vertex<int>* dNodePtr = parseVertex(destination, g);
     if (sNodePtr == nullptr || dNodePtr == nullptr) {
@@ -75,7 +76,7 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     }
     cout << endl;
     outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
-    
+
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -84,7 +85,7 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     CLInterface::presentUI(locations, distances, outFile); // return to the main menu
 }
 
-void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances){
+void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances) {
     system("cls");
     cout << endl;
     cout << "Restricted Route Planning" << endl;
@@ -98,12 +99,12 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
-    if(numNodes < 0){
+    if (numNodes < 0) {
         cout << "Invalid number of nodes to avoid." << endl;
         return;
     }
     vector<Vertex<int>*> nAvoid;
-    for(int i = 0; i < numNodes; i++) {
+    for (int i = 0; i < numNodes; i++) {
         cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
@@ -118,12 +119,12 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
-    if(numEdges < 0){
+    if (numEdges < 0) {
         cout << "Invalid number of edges to avoid." << endl;
         return;
     }
     vector<Edge<int>*> eAvoid;
-    for(int i = 0; i < numEdges; i++) {
+    for (int i = 0; i < numEdges; i++) {
         cout << "Please enter the edges to avoid in the format v1,v2 one by one : ";
         string edge;
         cin >> edge;
@@ -137,7 +138,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     cout << "Please enter the node that must be included (enter 0 if not desired): ";
     string mustNode;
     cin >> mustNode;
-    if(mustNode != "0"){
+    if (mustNode != "0") {
         Vertex<int>* must = parseVertex(mustNode, g);
         if (must == nullptr) {
             cout << "Invalid node input." << endl;
@@ -161,7 +162,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     CLInterface::presentUI(locations, distances, outFile); // return to the main menu
 }
 
-void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances){
+void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::string& locations, const std::string& distances) {
     system("cls");
     cout << endl;
     cout << "Eco-Friendly Route Planning" << endl;
@@ -175,17 +176,17 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
-    if(numNodes < 0){
+    if (numNodes < 0) {
         cout << "Invalid number of nodes to avoid." << endl;
         return;
     }
     vector<Vertex<int>*> nAvoid;
-    for(int i = 0; i < numNodes; i++) {
+    for (int i = 0; i < numNodes; i++) {
         cout << "Please enter the node to avoid: ";
         string node;
         cin >> node;
         Vertex<int>* v = parseVertex(node, g);
-        if( v == nullptr) {
+        if (v == nullptr) {
             cout << "Invalid node input." << endl;
             return;
         }
@@ -195,12 +196,12 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
-    if(numEdges < 0){
+    if (numEdges < 0) {
         cout << "Invalid number of edges to avoid." << endl;
         return;
     }
     vector<Edge<int>*> eAvoid;
-    for(int i = 0; i < numEdges; i++) {
+    for (int i = 0; i < numEdges; i++) {
         cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
         cin >> edge;
@@ -215,7 +216,7 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
     string maxWalkTimeStr;
     cin >> maxWalkTimeStr;
     double maxWalkTime = parseInt(maxWalkTimeStr);
-    if(maxWalkTime < 0){
+    if (maxWalkTime < 0) {
         cout << "Invalid maximum walking time." << endl;
         return;
     }
@@ -233,7 +234,7 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
         cout << "Invalid input, defaulting to no approximate path." << endl;
         aprox = false;
     }
-    
+
     Vertex<int>* sNodePtr = parseVertex(source, g);
     Vertex<int>* dNodePtr = parseVertex(destination, g);
     if (sNodePtr == nullptr || dNodePtr == nullptr) {
@@ -264,8 +265,6 @@ void CLInterface::defaultRun(const std::string& locations, const std::string& di
         parser.parseDistance(distances, &g);
         parser.parseInput(inputFile, outputFile, &g);
     }
-    
-    
 }
 
 void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ostream& outFile) {
