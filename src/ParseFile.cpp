@@ -154,7 +154,7 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
     return true;
 }
 
-int Parsefile::parseInput(const string& inputFileName,const string& outputFileName, Graph<int>* g) {
+int Parsefile::parseInput(const string& inputFileName, const string& outputFileName, Graph<int>* g) {
     fstream input(inputFileName);
     ofstream output(outputFileName);
     string line;
@@ -178,20 +178,21 @@ int Parsefile::parseInput(const string& inputFileName,const string& outputFileNa
             continue;
         }
 
-        //* First look for Query name, queries should begin with a # and are marked as finished by an empty line
-        if (!err) {
-            if (line[0] == '#') {
-                output << line << endl;
-            }
-            else {
-                err = true;
-                output << "Unexpected Input in begining or end of Query" << endl
-                    << "All queries should begin with '#' followed by the test name" << endl;
-                continue;
-            }
-        }
         //* if a mistake has occurred it should keep going until it finds an empty line
-        else if (err) continue;
+        if (err) continue;
+
+        //* First look for Query name, queries should begin with a # and are marked as finished by an empty line
+        
+        if (line[0] == '#') {
+            output << line << endl;
+            //getline(input, line);
+        }
+        else {
+            err = true;
+            output << "Unexpected Input in begining or end of Query" << endl
+            << "All queries should begin with '#' followed by the test name" << endl;
+            continue;
+            }
 
         //! Start argument search, all arguments should be composed of a string with exactly 1 ':' and can be split by it
         //* Look for Mode, first half of string should be exactly "Mode", second half should be either driving or driving-walking
