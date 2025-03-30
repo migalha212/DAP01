@@ -159,10 +159,12 @@ static void prepareRestrictedGraph(vector<Vertex<T>*> nA, vector<Edge<T>*> nE) {
         //* this is a suggestion so we can never get to the restricted vertex
         for (Edge<T>* e : v->getAdj()) {
             e->setSelected(true);
+            e->getReverse()->setSelected(true);
         }
     }
     for (Edge<T>* e : nE) {
         e->setSelected(true);
+        e->getReverse()->setSelected(true);
     }
 }
 

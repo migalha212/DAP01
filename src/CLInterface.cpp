@@ -8,8 +8,8 @@ int CLInterface::presentUI(const string& locations, const string& distances, ost
     Graph<int> g;
     Parsefile parser;
     if (locations.empty() || distances.empty()) {
-        if(parser.parseLocation("../small_data/Locations.csv", &g)) return 1;
-        if(parser.parseDistance("../small_data/Distances.csv", &g)) return 1;
+        if(parser.parseLocation("../data_files/Locations.csv", &g)) return 1;
+        if(parser.parseDistance("../data_files/Distances.csv", &g)) return 1;
     }
     else {
         if(parser.parseLocation(locations, &g)) return 1;
@@ -317,8 +317,8 @@ void CLInterface::defaultRun(const std::string& locations, const std::string& di
     Graph<int> g;
     Parsefile parser;
     if (locations.empty() || distances.empty()) {
-        parser.parseLocation("../small_data/Locations.csv", &g);
-        parser.parseDistance("../small_data/Distances.csv", &g);
+        parser.parseLocation("../data_files/Locations.csv", &g);
+        parser.parseDistance("../data_files/Distances.csv", &g);
         parser.parseInput("../input.txt", "../output.txt", &g);
     }
     else {
@@ -340,7 +340,7 @@ void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode
     vector<int> v;
     double dist = getPath(g, sNode, dNode, v, true);
     outFile << "BestDrivingRoute:";
-    if (dist != -1) {
+    if (dist > 0) {
         outputPath(v, outFile);
         outFile << '(' << dist << ')' << endl;
     }
@@ -351,7 +351,7 @@ void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode
     dijkstra(g, sNode, Distance::drive);
     dist = getPath(g, sNode, dNode, v, true);
     outFile << "AlternativeDrivingRoute:";
-    if (dist != -1) {
+    if (dist > 0) {
         outputPath(v, outFile);
         outFile << '(' << dist << ')' << endl;
     }
@@ -374,7 +374,7 @@ void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode,
     vector<int> v;
     double dist = getRestrictedPath(g, sNode, dNode, must, v);
     outFile << "RestrictedDrivingRoute:";
-    if (dist != -1) {
+    if (dist > 0) {
         outputPath(v, outFile);
         outFile << '(' << dist << ')' << endl;
     }
@@ -415,7 +415,7 @@ void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector
             pNode.node = v;
             pNode.dist = v->getDist();
             double dist = getPath(g, dNode, v, pNode.path, false);
-            if (dist != -1) {
+            if (dist > 0) {
                 parkingNodes.push_back(pNode);
             }
         }
@@ -435,7 +435,7 @@ void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector
         vector<int> drive;
         if (pNode.dist == INF) continue; // no path to parking node
         double dist = getPath(g, sNode, pNode.node, drive, true);
-        if (dist == -1) continue;
+        if (dist <= 0) continue;
         outFile << "DrivingRoute:";
         outputPath(drive, outFile);
         outFile << '(' << pNode.node->getDist() << ')' << endl;
