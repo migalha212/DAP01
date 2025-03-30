@@ -30,7 +30,17 @@ int Parsefile::parseLocation(const string& filename, Graph<int>* graph) {
         getline(iss, id, ',');
         getline(iss, code, ',');
         getline(iss, parking, '\r');
-        graph->addVertex(name, stoi(id), code, stoi(parking));
+        int idInt = parseInt(id);
+        if (idInt == -1) {
+            cerr << "Invalid id: " << id << endl;
+            return 1;
+        }
+        int parkingInt = parseInt(parking);
+        if (parkingInt == -1) {
+            cerr << "Invalid parking: " << parking << endl;
+            return 1;
+        }
+        graph->addVertex(name, idInt, code, parkingInt);
     }
     file.close();
     return 0;
@@ -54,8 +64,17 @@ int Parsefile::parseDistance(const string& filename, Graph<int>* graph) {
         getline(iss, walkTime, '\r');
         double dt;
         if (driveTime == "X") dt = INF;
-        else dt = stod(driveTime);
-        graph->addBidirectionalEdge(code1, code2, stod(walkTime), dt);
+        else dt = parseInt(driveTime);
+        if (dt == -1) {
+            cerr << "Invalid drive time: " << driveTime << endl;
+            return 1;
+        }
+        double walkTimeInt = parseInt(walkTime);
+        if (walkTimeInt == -1) {
+            cerr << "Invalid walk time: " << walkTime << endl;
+            return 1;
+        }
+        graph->addBidirectionalEdge(code1, code2, walkTimeInt, dt);
     }
     file.close();
     return 0;
@@ -130,13 +149,17 @@ bool parseAvoidVertex(string& value, Graph<int>* g, vector<Vertex<int>*>& nAvoid
 
 bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
     istringstream ss(value);
-    string id1, id2, fodder;
+    string id1, id2;
+    char fodder;
     Vertex<int>* v1, * v2;
     Edge<int>* e;
-    while (getline(ss, fodder, '(')) {
-        e = nullptr;
+    while (ss >> fodder) {
+        if (fodder != '(') return false;
         getline(ss, id1, ',');
         getline(ss, id2, ')');
+        
+        e = nullptr;
+
         v1 = parseVertex(id1, g);
         v2 = parseVertex(id2, g);
         if (v1 == nullptr || v2 == nullptr) return false;
@@ -150,6 +173,9 @@ bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
             return false;
         }
         eAvoid.push_back(e);
+        if (ss.peek() == ',') ss.ignore();
+        else if(ss.peek() == EOF) break;
+        else return false;
     }
     return true;
 }
@@ -323,7 +349,7 @@ int Parsefile::parseInput(const string& inputFileName, const string& outputFileN
             }
             if (!parseAvoidVertex(value, g, nAvoid)) {
                 err = true;
-                output << "Avoid Nodes had one or more invalid <id>/>code>" << endl;
+                output << "Avoid Nodes had one or more invalid <id>/>code> or invalid syntax" << endl;
                 continue;
             }
         }
