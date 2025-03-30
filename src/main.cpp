@@ -25,8 +25,7 @@ int main(int argc, char* argv []) {
             return 0;
         } else {
             std::cerr << "Invalid argument" << std::endl;
-            std::cerr << "Usage: ./app -i" << std::endl;
-            std::cerr << "or ./app locations.csv distances.csv input.txt output.txt" << std::endl;
+            std::cerr << "Usage: ./app -h - for help" << std::endl;
             return 1;
         }
         break;
