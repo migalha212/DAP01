@@ -61,19 +61,29 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     system("cls"); // clear screen
     cout << endl;
     cout << "Independent Route Planning" << endl;
-    cout << "Please enter the source node: ";
-    string source;
-    cin >> source;
-    cout << "Please enter the destination node: ";
-    string destination;
-    cin >> destination;
 
-    Vertex<int>* sNodePtr = parseVertex(source, g);
-    Vertex<int>* dNodePtr = parseVertex(destination, g);
-    if (sNodePtr == nullptr || dNodePtr == nullptr) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
+    Vertex<int>* sNodePtr = nullptr;
+    Vertex<int>* dNodePtr = nullptr;
+    string source, destination;
+
+    do {
+        cout << "Please enter the source node: ";
+        cin >> source;
+        sNodePtr = parseVertex(source, g);
+        if (sNodePtr == nullptr) {
+            cout << "Invalid source node input. Please try again." << endl;
+        }
+    } while (sNodePtr == nullptr);
+
+    do {
+        cout << "Please enter the destination node: ";
+        cin >> destination;
+        dNodePtr = parseVertex(destination, g);
+        if (dNodePtr == nullptr) {
+            cout << "Invalid destination node input. Please try again." << endl;
+        }
+    } while (dNodePtr == nullptr);
+
     cout << endl;
     outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
 
@@ -89,69 +99,96 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     system("cls");
     cout << endl;
     cout << "Restricted Route Planning" << endl;
-    cout << "Please enter the source node: ";
-    string source;
-    cin >> source;
-    cout << "Please enter the destination node: ";
-    string destination;
-    cin >> destination;
-    cout << "Please enter how many nodes you wish to avoid: ";
+
+    string source, destination;
+    Vertex<int>* sNodePtr = nullptr;
+    Vertex<int>* dNodePtr = nullptr;
+
+    do {
+        cout << "Please enter the source node: ";
+        cin >> source;
+        sNodePtr = parseVertex(source, g);
+        if (sNodePtr == nullptr) {
+            cout << "Invalid source node input. Please try again." << endl;
+        }
+    } while (sNodePtr == nullptr);
+
+    do {
+        cout << "Please enter the destination node: ";
+        cin >> destination;
+        dNodePtr = parseVertex(destination, g);
+        if (dNodePtr == nullptr) {
+            cout << "Invalid destination node input. Please try again." << endl;
+        }
+    } while (dNodePtr == nullptr);
+
     string avoidNodes;
-    cin >> avoidNodes;
-    int numNodes = parseInt(avoidNodes);
-    if (numNodes < 0) {
-        cout << "Invalid number of nodes to avoid." << endl;
-        return;
-    }
+    int numNodes;
+    do {
+        cout << "Please enter how many nodes you wish to avoid: ";
+        cin >> avoidNodes;
+        numNodes = parseInt(avoidNodes);
+        if (numNodes < 0) {
+            cout << "Invalid number of nodes to avoid. Please try again." << endl;
+        }
+    } while (numNodes < 0);
+
     vector<Vertex<int>*> nAvoid;
     for (int i = 0; i < numNodes; i++) {
-        cout << "Please enter the node to avoid: ";
         string node;
-        cin >> node;
-        Vertex<int>* v = parseVertex(node, g);
-        if (v == nullptr) {
-            cout << "Invalid node input." << endl;
-            return;
-        }
+        Vertex<int>* v = nullptr;
+        do {
+            cout << "Please enter the node to avoid: ";
+            cin >> node;
+            v = parseVertex(node, g);
+            if (v == nullptr) {
+                cout << "Invalid node input. Please try again." << endl;
+            }
+        } while (v == nullptr);
         nAvoid.push_back(v);
     }
-    cout << "Please enter how many edges you wish to avoid: ";
+
     string avoidEdges;
-    cin >> avoidEdges;
-    int numEdges = parseInt(avoidEdges);
-    if (numEdges < 0) {
-        cout << "Invalid number of edges to avoid." << endl;
-        return;
-    }
+    int numEdges;
+    do {
+        cout << "Please enter how many edges you wish to avoid: ";
+        cin >> avoidEdges;
+        numEdges = parseInt(avoidEdges);
+        if (numEdges < 0) {
+            cout << "Invalid number of edges to avoid. Please try again." << endl;
+        }
+    } while (numEdges < 0);
+
     vector<Edge<int>*> eAvoid;
     for (int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edges to avoid in the format v1,v2 one by one : ";
         string edge;
-        cin >> edge;
-        Edge<int>* e = parseEdge(edge, g);
-        if (e == nullptr) {
-            cout << "Invalid edge input." << endl;
-            return;
-        }
+        Edge<int>* e = nullptr;
+        do {
+            cout << "Please enter the edges to avoid in the format v1,v2 one by one: ";
+            cin >> edge;
+            e = parseEdge(edge, g);
+            if (e == nullptr) {
+                cout << "Invalid edge input. Please try again." << endl;
+            }
+        } while (e == nullptr);
         eAvoid.push_back(e);
     }
-    cout << "Please enter the node that must be included (enter 0 if not desired): ";
-    string mustNode;
-    cin >> mustNode;
-    if (mustNode != "0") {
-        Vertex<int>* must = parseVertex(mustNode, g);
-        if (must == nullptr) {
-            cout << "Invalid node input." << endl;
-            return;
-        }
-    }
 
-    Vertex<int>* sNodePtr = parseVertex(source, g);
-    Vertex<int>* dNodePtr = parseVertex(destination, g);
-    if (sNodePtr == nullptr || dNodePtr == nullptr) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
+    string mustNode;
+    Vertex<int>* must = nullptr;
+    do {
+        cout << "Please enter the node that must be included (enter 0 if not desired): ";
+        cin >> mustNode;
+        if (mustNode != "0") {
+            must = parseVertex(mustNode, g);
+            if (must == nullptr) {
+                cout << "Invalid node input. Please try again." << endl;
+            }
+        } else {
+            break;
+        }
+    } while (must == nullptr);
+
     cout << endl;
     outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
     cout << "Press any key to continue..." << endl;
@@ -166,81 +203,105 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
     system("cls");
     cout << endl;
     cout << "Eco-Friendly Route Planning" << endl;
-    cout << "Please enter the source node: ";
-    string source;
-    cin >> source;
-    cout << "Please enter the destination node: ";
-    string destination;
-    cin >> destination;
-    cout << "Please enter how many nodes to avoid: ";
+
+    string source, destination;
+    Vertex<int>* sNodePtr = nullptr;
+    Vertex<int>* dNodePtr = nullptr;
+
+    do {
+        cout << "Please enter the source node: ";
+        cin >> source;
+        sNodePtr = parseVertex(source, g);
+        if (sNodePtr == nullptr) {
+            cout << "Invalid source node input. Please try again." << endl;
+        }
+    } while (sNodePtr == nullptr);
+
+    do {
+        cout << "Please enter the destination node: ";
+        cin >> destination;
+        dNodePtr = parseVertex(destination, g);
+        if (dNodePtr == nullptr) {
+            cout << "Invalid destination node input. Please try again." << endl;
+        }
+    } while (dNodePtr == nullptr);
+
     string avoidNodes;
-    cin >> avoidNodes;
-    int numNodes = parseInt(avoidNodes);
-    if (numNodes < 0) {
-        cout << "Invalid number of nodes to avoid." << endl;
-        return;
-    }
+    int numNodes;
+    do {
+        cout << "Please enter how many nodes to avoid: ";
+        cin >> avoidNodes;
+        numNodes = parseInt(avoidNodes);
+        if (numNodes < 0) {
+            cout << "Invalid number of nodes to avoid. Please try again." << endl;
+        }
+    } while (numNodes < 0);
+
     vector<Vertex<int>*> nAvoid;
     for (int i = 0; i < numNodes; i++) {
-        cout << "Please enter the node to avoid: ";
         string node;
-        cin >> node;
-        Vertex<int>* v = parseVertex(node, g);
-        if (v == nullptr) {
-            cout << "Invalid node input." << endl;
-            return;
-        }
+        Vertex<int>* v = nullptr;
+        do {
+            cout << "Please enter the node to avoid: ";
+            cin >> node;
+            v = parseVertex(node, g);
+            if (v == nullptr) {
+                cout << "Invalid node input. Please try again." << endl;
+            }
+        } while (v == nullptr);
         nAvoid.push_back(v);
     }
-    cout << "Please enter how many edges to avoid: ";
+
     string avoidEdges;
-    cin >> avoidEdges;
-    int numEdges = parseInt(avoidEdges);
-    if (numEdges < 0) {
-        cout << "Invalid number of edges to avoid." << endl;
-        return;
-    }
+    int numEdges;
+    do {
+        cout << "Please enter how many edges to avoid: ";
+        cin >> avoidEdges;
+        numEdges = parseInt(avoidEdges);
+        if (numEdges < 0) {
+            cout << "Invalid number of edges to avoid. Please try again." << endl;
+        }
+    } while (numEdges < 0);
+
     vector<Edge<int>*> eAvoid;
     for (int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edge to avoid in the format v1,v2 : ";
         string edge;
-        cin >> edge;
-        Edge<int>* e = parseEdge(edge, g);
-        if (e == nullptr) {
-            cout << "Invalid edge input." << endl;
-            return;
-        }
+        Edge<int>* e = nullptr;
+        do {
+            cout << "Please enter the edge to avoid in the format v1,v2: ";
+            cin >> edge;
+            e = parseEdge(edge, g);
+            if (e == nullptr) {
+                cout << "Invalid edge input. Please try again." << endl;
+            }
+        } while (e == nullptr);
         eAvoid.push_back(e);
     }
-    cout << "Please enter the maximum walking time: ";
-    string maxWalkTimeStr;
-    cin >> maxWalkTimeStr;
-    double maxWalkTime = parseInt(maxWalkTimeStr);
-    if (maxWalkTime < 0) {
-        cout << "Invalid maximum walking time." << endl;
-        return;
-    }
-    cout << "Please enter if you want the approximate path (y/n): ";
-    string aproxStr;
-    cin >> aproxStr;
-    bool aprox = false;
-    if (aproxStr == "y" || aproxStr == "Y") {
-        aprox = true;
-    }
-    else if (aproxStr == "n" || aproxStr == "N") {
-        aprox = false;
-    }
-    else {
-        cout << "Invalid input, defaulting to no approximate path." << endl;
-        aprox = false;
-    }
 
-    Vertex<int>* sNodePtr = parseVertex(source, g);
-    Vertex<int>* dNodePtr = parseVertex(destination, g);
-    if (sNodePtr == nullptr || dNodePtr == nullptr) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
+    string maxWalkTimeStr;
+    double maxWalkTime;
+    do {
+        cout << "Please enter the maximum walking time: ";
+        cin >> maxWalkTimeStr;
+        maxWalkTime = parseInt(maxWalkTimeStr);
+        if (maxWalkTime < 0) {
+            cout << "Invalid maximum walking time. Please try again." << endl;
+        }
+    } while (maxWalkTime < 0);
+
+    string aproxStr;
+    bool aprox = false;
+    do {
+        cout << "Please enter if you want the approximate path (y/n): ";
+        cin >> aproxStr;
+        if (aproxStr == "y" || aproxStr == "Y") {
+            aprox = true;
+        } else if (aproxStr == "n" || aproxStr == "N") {
+            aprox = false;
+        } else {
+            cout << "Invalid input. Please enter 'y' or 'n'." << endl;
+        }
+    } while (aproxStr != "y" && aproxStr != "Y" && aproxStr != "n" && aproxStr != "N");
 
     cout << endl;
     outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
