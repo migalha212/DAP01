@@ -4,16 +4,16 @@
 using namespace std;
 
 
-void CLInterface::presentUI(const string& locations, const string& distances, ostream& outFile) {
+int CLInterface::presentUI(const string& locations, const string& distances, ostream& outFile) {
     Graph<int> g;
     Parsefile parser;
     if (locations.empty() || distances.empty()) {
-        parser.parseLocation("../small_data/Locations.csv", &g);
-        parser.parseDistance("../small_data/Distances.csv", &g);
+        if(parser.parseLocation("../small_data/Locations.csv", &g)) return 1;
+        if(parser.parseDistance("../small_data/Distances.csv", &g)) return 1;
     }
     else {
-        parser.parseLocation(locations, &g);
-        parser.parseDistance(distances, &g);
+        if(parser.parseLocation(locations, &g)) return 1;
+        if(parser.parseDistance(distances, &g)) return 1;
     }
 
 
@@ -51,9 +51,9 @@ void CLInterface::presentUI(const string& locations, const string& distances, os
             ecoFriendlyRoute(&g, outFile, locations, distances);
             break;
         default:
-            return;
+            return 1;
         }
-        return;
+        return 0;
     }
 }
 
