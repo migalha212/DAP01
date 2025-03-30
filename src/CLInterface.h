@@ -24,7 +24,7 @@ public:
      * @param distances The file path to the distances data. If empty, default file is used.
      * @param outFile The output stream where results will be written.
      *  If empty, defaults to standard console out(std::cout).
-     * 
+     *
      * @returns 0 upon success, non-zero otherwise.
      */
     int presentUI(const std::string& locations, const std::string& distances, std::ostream& outFile);
@@ -56,10 +56,10 @@ public:
      * @param dNode A pointer to the destination node involved in the query.
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
-     * 
+     *
      * Dijkstra's shortest path algorithm dominates the time complexity of this method.
      * The overall time complexity is O((V + E) log V), where V is the number of vertices and E
-     * is the number of edges in the graph. 
+     * is the number of edges in the graph.
      */
     void outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ostream& outFile);
 
@@ -78,7 +78,7 @@ public:
      * @param must A pointer to a node that must be included in the path.
      * @param g A pointer to the graph object containing the nodes and edges.
      * @param outFile A reference to the output file stream where the result will be written.
-     * 
+     *
      * Dijkstra's shortest path algorithm dominates the time complexity of this method.
      * The overall time complexity is O((V + E) log V), where V is the number of vertices and E
      * is the number of edges in the graph.
@@ -100,25 +100,24 @@ public:
      * @param aprox Boolean flag indicating whether to allow approximate routes if none exist in the given maxWalkTime.
      * @param g Pointer to the graph object representing the network.
      * @param outFile Output stream to write the results.
-     * 
+     *
      * Dijkstra's shortest path algorithm dominates the time complexity of this method.
-     * The overall time complexity is O((V + E) log V + P * V), where V is the number of vertices, E
-     * is the number of edges in the graph and P is the number of vertices with parking.
+     * The overall time complexity is O(V^2), where V is the number of vertices in the graph.
      */
     void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ostream& outFile);
-    
-    
-    private:
+
+
+private:
     /* Methods Meant for use in the interactive Menu */
 
     /**
      *  Method to aid in writing the path to the output stream.
-     * 
+     *
      *  @param v The vector of node IDs representing the path.
      *  @param out The output stream to write the path to.
      */
     void outputPath(std::vector<int>& v, std::ostream& out);
-    
+
     /**
      * @brief Handles the independent route planning functionality in the command-line interface.
      *
@@ -142,7 +141,7 @@ public:
      * and outputs the shortest path between the source and destination nodes following all the restrictions.
      * The results can go to either a file or standard console out.
      * After execution, the user is returned to the main menu.
-     * 
+     *
      * @param g Reference to the graph that represents map.
      * @param outFile Place where the results will be writen, can be a file or just standard console out.
      * @param locations A string representing the file path for a formated .csv file containing Location/Node data.
