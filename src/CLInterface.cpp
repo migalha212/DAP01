@@ -67,14 +67,8 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     string destination;
     cin >> destination;
     
-    int sNode = stoi(source);
-    int dNode = stoi(destination);
-    if (sNode == -1 || dNode == -1) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
-    Vertex<int>* sNodePtr = g->findVertex(sNode);
-    Vertex<int>* dNodePtr = g->findVertex(dNode);
+    Vertex<int>* sNodePtr = parseVertex(source, g);
+    Vertex<int>* dNodePtr = parseVertex(destination, g);
     if (sNodePtr == nullptr || dNodePtr == nullptr) {
         cout << "Invalid node input." << endl;
         return;
@@ -100,7 +94,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     cout << "Please enter the destination node: ";
     string destination;
     cin >> destination;
-    cout << "Please enter how many nodes to avoid: ";
+    cout << "Please enter how many nodes you wish to avoid: ";
     string avoidNodes;
     cin >> avoidNodes;
     int numNodes = parseInt(avoidNodes);
@@ -120,7 +114,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
         }
         nAvoid.push_back(v);
     }
-    cout << "Please enter how many edges to avoid: ";
+    cout << "Please enter how many edges you wish to avoid: ";
     string avoidEdges;
     cin >> avoidEdges;
     int numEdges = parseInt(avoidEdges);
@@ -130,7 +124,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     }
     vector<Edge<int>*> eAvoid;
     for(int i = 0; i < numEdges; i++) {
-        cout << "Please enter the edge to avoid in the format v1,v2 : ";
+        cout << "Please enter the edges to avoid in the format v1,v2 one by one : ";
         string edge;
         cin >> edge;
         Edge<int>* e = parseEdge(edge, g);
@@ -150,14 +144,9 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
             return;
         }
     }
-    int sNode = stoi(source);
-    int dNode = stoi(destination);
-    if (sNode == -1 || dNode == -1) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
-    Vertex<int>* sNodePtr = g->findVertex(sNode);
-    Vertex<int>* dNodePtr = g->findVertex(dNode);
+
+    Vertex<int>* sNodePtr = parseVertex(source, g);
+    Vertex<int>* dNodePtr = parseVertex(destination, g);
     if (sNodePtr == nullptr || dNodePtr == nullptr) {
         cout << "Invalid node input." << endl;
         return;
@@ -245,14 +234,8 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
         aprox = false;
     }
     
-    int sNode = stoi(source);
-    int dNode = stoi(destination);
-    if (sNode == -1 || dNode == -1) {
-        cout << "Invalid node input." << endl;
-        return;
-    }
-    Vertex<int>* sNodePtr = g->findVertex(sNode);
-    Vertex<int>* dNodePtr = g->findVertex(dNode);
+    Vertex<int>* sNodePtr = parseVertex(source, g);
+    Vertex<int>* dNodePtr = parseVertex(destination, g);
     if (sNodePtr == nullptr || dNodePtr == nullptr) {
         cout << "Invalid node input." << endl;
         return;
