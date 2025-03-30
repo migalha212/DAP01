@@ -131,9 +131,6 @@ public:
      * @param outFile Place where the results will be writen, can be a file or just standard console out.
      * @param locations A string representing the file path for a formated .csv file containing Location/Node data.
      * @param distances A string representing the file path for a formated .csv file containing Distance/Edge data.
-     *
-     *
-     * @warning Invalid user input (e.g., non-existent nodes or edges) will terminate early with an error message.
      */
     void independantRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
 
@@ -150,8 +147,6 @@ public:
      * @param outFile Place where the results will be writen, can be a file or just standard console out.
      * @param locations A string representing the file path for a formated .csv file containing Location/Node data.
      * @param distances A string representing the file path for a formated .csv file containing Distance/Edge data.
-     *
-     * @warning Invalid user input (e.g., non-existent nodes or edges) will terminate early with an error message.
      */
     void restrictedRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
 
@@ -167,8 +162,6 @@ public:
      * @param outFile Place where the results will be writen, can be a file or just standard console out.
      * @param locations A string representing the file path for a formated .csv file containing Location/Node data.
      * @param distances A string representing the file path for a formated .csv file containing Distance/Edge data.
-     *
-     * @warning Invalid user input (e.g., non-existent nodes or edges) will terminate early with an error message.
      */
     void ecoFriendlyRoute(Graph<int>* g, std::ostream& outFile, const std::string& locations, const std::string& distances);
 };
