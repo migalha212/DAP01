@@ -24,8 +24,10 @@ public:
      * @param distances The file path to the distances data. If empty, default file is used.
      * @param outFile The output stream where results will be written.
      *  If empty, defaults to standard console out(std::cout).
+     * 
+     * @returns 0 upon success, non-zero otherwise.
      */
-    void presentUI(const std::string& locations, const std::string& distances, std::ostream& outFile);
+    int presentUI(const std::string& locations, const std::string& distances, std::ostream& outFile);
 
 
     /**

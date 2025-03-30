@@ -23,7 +23,7 @@ template <class T>
  * @param origin Pointer to the origin vertex from which the shortest paths will be calculated.
  * @param distance Decides between using Driving edges or Walking edges.
  * 
- * O(|E| log |V|) time complexity, O(|V|) space complexity.
+ * O((E + V) log |V|) time complexity, O(|V|) space complexity.
  * 
  * @note The graph should not contain negative weight edges, as Dijkstra's algorithm does not handle them correctly.
  */
@@ -52,10 +52,12 @@ template <class T>
 /**
  * @brief Prepares a restricted graph by marking specified vertices and edges as visited or selected so they are ignored in the algorithm.
  *
- * O(|E|) time complexity, O(1) space complexity the method itself does not alocate extra space.
  *
  * @param nA A vector of pointers to the vertices that should be avoided.
  * @param nE A vector of pointers to the edges that should be avoided.
+ * 
+ * O(|E| + |V|) time complexity, O(1) space complexity the method itself does not alocate extra space.
+ * where V is the amount of vertices and E the amount of edges in the vectors, which worst case are the same as the graph.
  */
 static void prepareRestrictedGraph(std::vector<Vertex<T>*> nA, std::vector<Edge<T>*> nE);
 
