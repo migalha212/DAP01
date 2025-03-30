@@ -4,7 +4,6 @@
 #include <Graph.h>
 #include <MutablePriorityQueue.h>
 
-// ! Do note that method descriptions and names aren't final, only built as a demo for the stucture that might be best
 enum Distance
 {
     walk,

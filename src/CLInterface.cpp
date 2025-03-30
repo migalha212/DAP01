@@ -39,7 +39,7 @@ int CLInterface::presentUI(const string& locations, const string& distances, ost
             choiceInt = parseInt(choice);
         }
 
-        // TODO build logic for all 3 routes
+
         switch (choiceInt) {
         case 1:
             independantRoute(&g, outFile, locations, distances);
@@ -429,7 +429,6 @@ void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector
     //* After this one happens: dist holds the walkTime, pNode.node.getDist() holds the drive time
     //* The Nodes should be sorted using this info
     sort(parkingNodes.begin(), parkingNodes.end(), parkingSort);
-    // Todo: complete the paths that meet the requirement and present the best
     for (auto& pNode : parkingNodes) {
         if (pNode.dist > maxWalkTime) continue;
         vector<int> drive;

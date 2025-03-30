@@ -42,7 +42,6 @@ int main(int argc, char* argv []) {
             std::cerr << "Usage: ./app -i" << std::endl;
             return 1;
         }
-        //interface.presentUI(argv[1], argv[2], cout);
         break;
     }
     case 4: {
@@ -57,7 +56,6 @@ int main(int argc, char* argv []) {
             std::cerr << "Usage: ./app -i" << std::endl;
             return 1;
         }
-        //interface.presentUI(argv[1], argv[2], outfile);
         break;
     }
           // Same as case 4, but the default will be to output to a file, which should be the final argument
@@ -69,7 +67,6 @@ int main(int argc, char* argv []) {
 
         interface.defaultRun(locatinsFileName, distancesFileName, inputFileName, outputFileName);
         std::cout << "Result written to " << outputFileName << std::endl;
-        //defaultrun(argv[1], argv[2], infile, outfile);
         break;
     }
           // Can either End the program right away with an error message
