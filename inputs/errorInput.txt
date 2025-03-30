@@ -1,0 +1,27 @@
+# Miss spelt Mode
+Mot:
+
+# Miss spelt Mode2
+Mode:banana?
+
+# Miss spelt Source
+Mode:driving
+Fonte:haha
+
+# invalid source
+Mode:driving
+Source:papaia
+
+# Miss spelt Destination
+Mode:driving
+Source:2
+Destinatario:3
+
+# invalid Destination
+Mode:driving
+Source:2
+Destination:manga
+
+# Misssing Source
+Mode:driving
+Destination:manga

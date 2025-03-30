@@ -85,7 +85,7 @@ void CLInterface::independantRoute(Graph<int>* g, ostream& outFile, const std::s
     } while (dNodePtr == nullptr);
 
     cout << endl;
-    outPutIndependentResult(sNodePtr, dNodePtr, g, outFile);
+    outputIndependentResult(sNodePtr, dNodePtr, g, outFile);
 
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
@@ -190,7 +190,7 @@ void CLInterface::restrictedRoute(Graph<int>* g, ostream& outFile, const std::st
     } while (must == nullptr);
 
     cout << endl;
-    outPutRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
+    outputRestrictedResult(sNodePtr, dNodePtr, nAvoid, eAvoid, must, g, outFile);
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -304,7 +304,7 @@ void CLInterface::ecoFriendlyRoute(Graph<int>* g, ostream& outFile, const std::s
     } while (aproxStr != "y" && aproxStr != "Y" && aproxStr != "n" && aproxStr != "N");
 
     cout << endl;
-    outPutEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
+    outputEcoResult(sNodePtr, dNodePtr, nAvoid, eAvoid, maxWalkTime, aprox, g, outFile);
     cout << "Press any key to continue..." << endl;
     cin.ignore(); // clear the newline character from the input buffer
     cin.get(); // wait for user input
@@ -328,7 +328,7 @@ void CLInterface::defaultRun(const std::string& locations, const std::string& di
     }
 }
 
-void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ostream& outFile) {
+void CLInterface::outputIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -362,7 +362,7 @@ void CLInterface::outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode
     outFile << endl;
 }
 
-void CLInterface::outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, ostream& outFile) {
+void CLInterface::outputRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;
@@ -397,7 +397,7 @@ bool parkingSort(const parkingNode& a, const parkingNode& b) {
     return false;
 }
 
-void CLInterface::outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, ostream& outFile) {
+void CLInterface::outputEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, vector<Vertex<int>*>& nAvoid, vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, ostream& outFile) {
 
     outFile << "Source:" << sNode->getInfo() << endl;
     outFile << "Destination:" << dNode->getInfo() << endl;

@@ -60,7 +60,7 @@ public:
      * The overall time complexity is O((V + E) log V), where V is the number of vertices and E
      * is the number of edges in the graph.
      */
-    void outPutIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ostream& outFile);
+    void outputIndependentResult(Vertex<int>* sNode, Vertex<int>* dNode, Graph<int>* g, std::ostream& outFile);
 
     /**
      * @brief Outputs the result of a restricted path query operation to a file or standard cout.
@@ -82,7 +82,7 @@ public:
      * The overall time complexity is O((V + E) log V), where V is the number of vertices and E
      * is the number of edges in the graph.
      */
-    void outPutRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ostream& outFile);
+    void outputRestrictedResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, Vertex<int>* must, Graph<int>* g, std::ostream& outFile);
 
     /**
      * @brief Outputs the eco-friendly route planning results based on the given parameters.
@@ -103,7 +103,7 @@ public:
      * Dijkstra's shortest path algorithm dominates the time complexity of this method.
      * The overall time complexity is O(V^2), where V is the number of vertices in the graph.
      */
-    void outPutEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ostream& outFile);
+    void outputEcoResult(Vertex<int>* sNode, Vertex<int>* dNode, std::vector<Vertex<int>*>& nAvoid, std::vector<Edge<int>*>& eAvoid, const double& maxWalkTime, const bool& aprox, Graph<int>* g, std::ostream& outFile);
 
 
 private:

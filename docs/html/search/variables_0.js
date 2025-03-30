@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dist_84',['dist',['../structparkingNode.html#a7586ecb3bfac54c77bf9568f2595b6fe',1,'parkingNode']]]
+  ['adj_231',['adj',['../classVertex.html#a5deeceabd797cbddd87d304a69e7617f',1,'Vertex']]]
 ];

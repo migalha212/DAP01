@@ -72,8 +72,8 @@ $(function() {
 <div class="title">ShortestPathAlgorithms.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;Graph.h&gt;</code><br />
-<code>#include &lt;MutablePriorityQueue.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Graph_8h_source.html">Graph.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="MutablePriorityQueue_8h_source.html">MutablePriorityQueue.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ShortestPathAlgorithms.h:</div>
 <div class="dyncontent">
@@ -97,19 +97,19 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a24fffa37658bb0541fa3bf02d207321d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a24fffa37658bb0541fa3bf02d207321d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a24fffa37658bb0541fa3bf02d207321d">relax</a> (Edge&lt; T &gt; *edge)</td></tr>
+<tr class="memitem:a24fffa37658bb0541fa3bf02d207321d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a24fffa37658bb0541fa3bf02d207321d">relax</a> (<a class="el" href="classEdge.html">Edge</a>&lt; T &gt; *edge)</td></tr>
 <tr class="memdesc:a24fffa37658bb0541fa3bf02d207321d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relaxes the edge if a shorter path is found. Modified to work with driving time.  <a href="ShortestPathAlgorithms_8h.html#a24fffa37658bb0541fa3bf02d207321d">More...</a><br /></td></tr>
 <tr class="separator:a24fffa37658bb0541fa3bf02d207321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf63f4a26a75585f9a8dbcf6e4e60c77"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:aaf63f4a26a75585f9a8dbcf6e4e60c77"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#aaf63f4a26a75585f9a8dbcf6e4e60c77">walkingRelax</a> (Edge&lt; T &gt; *edge)</td></tr>
+<tr class="memitem:aaf63f4a26a75585f9a8dbcf6e4e60c77"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#aaf63f4a26a75585f9a8dbcf6e4e60c77">walkingRelax</a> (<a class="el" href="classEdge.html">Edge</a>&lt; T &gt; *edge)</td></tr>
 <tr class="memdesc:aaf63f4a26a75585f9a8dbcf6e4e60c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relaxes the edge if a shorter path is found. Modified to work with walking time.  <a href="ShortestPathAlgorithms_8h.html#aaf63f4a26a75585f9a8dbcf6e4e60c77">More...</a><br /></td></tr>
 <tr class="separator:aaf63f4a26a75585f9a8dbcf6e4e60c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e8c44175c81c8bf5d58a75e62108ac"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a21e8c44175c81c8bf5d58a75e62108ac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a21e8c44175c81c8bf5d58a75e62108ac">dijkstra</a> (Graph&lt; T &gt; *g, Vertex&lt; T &gt; *origin, <a class="el" href="ShortestPathAlgorithms_8h.html#a81b4dfc84803e5e70dd5d37d4a53ae7f">Distance</a> distance)</td></tr>
+<tr class="memitem:a21e8c44175c81c8bf5d58a75e62108ac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a21e8c44175c81c8bf5d58a75e62108ac">dijkstra</a> (<a class="el" href="classGraph.html">Graph</a>&lt; T &gt; *g, <a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *origin, <a class="el" href="ShortestPathAlgorithms_8h.html#a81b4dfc84803e5e70dd5d37d4a53ae7f">Distance</a> distance)</td></tr>
 <tr class="memdesc:a21e8c44175c81c8bf5d58a75e62108ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the shortest paths from a given origin vertex to all other vertices in the graph using Dijkstra's algorithm.  <a href="ShortestPathAlgorithms_8h.html#a21e8c44175c81c8bf5d58a75e62108ac">More...</a><br /></td></tr>
 <tr class="separator:a21e8c44175c81c8bf5d58a75e62108ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a349d1bc43072213c3d8f1868e1750805"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a349d1bc43072213c3d8f1868e1750805"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a349d1bc43072213c3d8f1868e1750805">restrictedDrivingDijkstra</a> (Graph&lt; T &gt; *g, Vertex&lt; T &gt; *origin, std::vector&lt; Vertex&lt; T &gt; * &gt; <a class="el" href="ParseFile_8cpp.html#a7dc6fef0daa34f843b7b6716f7998d23">nAvoid</a>, std::vector&lt; Edge&lt; T &gt; * &gt; <a class="el" href="ParseFile_8cpp.html#a5fa002daaf6ceb3453aaba36cf77b35d">eAvoid</a>, Vertex&lt; T &gt; *<a class="el" href="ShortestPathAlgorithms_8cpp.html#ac805e767cbf452db979787c2f474d0c1">must</a>)</td></tr>
+<tr class="memitem:a349d1bc43072213c3d8f1868e1750805"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="ShortestPathAlgorithms_8h.html#a349d1bc43072213c3d8f1868e1750805">restrictedDrivingDijkstra</a> (<a class="el" href="classGraph.html">Graph</a>&lt; T &gt; *g, <a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *origin, std::vector&lt; <a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; * &gt; <a class="el" href="ParseFile_8cpp.html#a7dc6fef0daa34f843b7b6716f7998d23">nAvoid</a>, std::vector&lt; <a class="el" href="classEdge.html">Edge</a>&lt; T &gt; * &gt; <a class="el" href="ParseFile_8cpp.html#a5fa002daaf6ceb3453aaba36cf77b35d">eAvoid</a>, <a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *<a class="el" href="ShortestPathAlgorithms_8cpp.html#ac805e767cbf452db979787c2f474d0c1">must</a>)</td></tr>
 <tr class="memdesc:a349d1bc43072213c3d8f1868e1750805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the shortest paths from a given origin vertex to all other vertices in the graph using Dijkstra's algorithm. Along with following restrictions such as avoid Edges and Nodes. If a must vertex is provided, the algorithm will ensure that the path includes this vertex.  <a href="ShortestPathAlgorithms_8h.html#a349d1bc43072213c3d8f1868e1750805">More...</a><br /></td></tr>
 <tr class="separator:a349d1bc43072213c3d8f1868e1750805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -144,13 +144,13 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void dijkstra </td>
           <td>(</td>
-          <td class="paramtype">Graph&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classGraph.html">Graph</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vertex&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>origin</em>, </td>
         </tr>
         <tr>
@@ -192,7 +192,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">bool relax </td>
           <td>(</td>
-          <td class="paramtype">Edge&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classEdge.html">Edge</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>edge</em></td><td>)</td>
           <td></td>
         </tr>
@@ -222,31 +222,31 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">void restrictedDrivingDijkstra </td>
           <td>(</td>
-          <td class="paramtype">Graph&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classGraph.html">Graph</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vertex&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>origin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; Vertex&lt; T &gt; * &gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; * &gt;&#160;</td>
           <td class="paramname"><em>nAvoid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; Edge&lt; T &gt; * &gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classEdge.html">Edge</a>&lt; T &gt; * &gt;&#160;</td>
           <td class="paramname"><em>eAvoid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vertex&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classVertex.html">Vertex</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>must</em>&#160;</td>
         </tr>
         <tr>
@@ -282,7 +282,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">bool walkingRelax </td>
           <td>(</td>
-          <td class="paramtype">Edge&lt; T &gt; *&#160;</td>
+          <td class="paramtype"><a class="el" href="classEdge.html">Edge</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>edge</em></td><td>)</td>
           <td></td>
         </tr>

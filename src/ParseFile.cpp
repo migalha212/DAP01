@@ -148,6 +148,7 @@ bool parseAvoidVertex(string& value, Graph<int>* g, vector<Vertex<int>*>& nAvoid
 }
 
 bool parseAvoidEdge(string& value, Graph<int>* g, vector<Edge<int>*>& eAvoid) {
+    if(value.back() != ')' && !value.empty()) return false; // remove trailing comma if present
     istringstream ss(value);
     string id1, id2;
     char fodder;
@@ -298,7 +299,7 @@ int Parsefile::parseInput(const string& inputFileName, const string& outputFileN
             if (line.empty()) {
                 //* upon finding an emptyline with the driving mode we can end the query here
                 if (mode == Mode::driving) {
-                    interface.outPutIndependentResult(source, destination, g, output);
+                    interface.outputIndependentResult(source, destination, g, output);
                     continue;
                 }
                 //* if not then there is an error, because the formating for the mode was not completed
@@ -403,7 +404,7 @@ int Parsefile::parseInput(const string& inputFileName, const string& outputFileN
         //* Final Step is to call the according algorithm
         switch (mode) {
         case Mode::driving:
-            interface.outPutRestrictedResult(source, destination, nAvoid, eAvoid, must, g, output);
+            interface.outputRestrictedResult(source, destination, nAvoid, eAvoid, must, g, output);
             break;
 
         case Mode::drivingwalking:
@@ -418,7 +419,7 @@ int Parsefile::parseInput(const string& inputFileName, const string& outputFileN
                 }
                 else
                     aproximate = true;
-            interface.outPutEcoResult(source, destination, nAvoid, eAvoid, maxWalkingTime, aproximate, g, output);
+            interface.outputEcoResult(source, destination, nAvoid, eAvoid, maxWalkingTime, aproximate, g, output);
             if (line.empty()) output << endl;
             break;
         }
